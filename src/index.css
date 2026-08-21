@@ -43,3 +43,32 @@ body {
     display: none;
   }
 }
+
+/* Desktop filter sidebar */
+.desktop-filter-sidebar {
+  display: none;
+}
+
+/* Mobile filter button */
+.mobile-filter-button {
+  display: flex;
+}
+
+/* Mobile filter panel */
+.mobile-filter-panel {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .desktop-filter-sidebar {
+    display: block;
+  }
+
+  .mobile-filter-button {
+    display: none;
+  }
+
+  .mobile-filter-panel {
+    display: none;
+  }
+}
