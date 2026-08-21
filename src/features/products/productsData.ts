@@ -104,7 +104,7 @@ export const products: Product[] = [
     },
   },
   {
-    id: "2",
+    id: "5",
     name: "AeroBook X14 Laptop",
     brand: "Aero",
     category: "Laptops",
