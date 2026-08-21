@@ -110,7 +110,7 @@ export const products: Product[] = [
     category: "Laptops",
     price: 1299,
     originalPrice: 1499,
-    rating: 4.6,
+    rating: 2,
     reviewCount: 87,
     image: "/images/laptop-11.avif",
     images: [

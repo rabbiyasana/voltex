@@ -19,6 +19,7 @@ function App() {
       <HomePage
         searchTerm={searchTerm}
         selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
       />
     </div>
   );
