@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { products } from "../features/products/productsData";
 
-import { Check, Search, SlidersHorizontal, } from "lucide-react";
+import { Check, ChevronLeft,ChevronRight, Search, SlidersHorizontal, } from "lucide-react";
 
 import FilterSidebar from "../components/FilterSidebar";
 import ProductCard from "../features/products/ProductCard";
@@ -30,6 +30,9 @@ function HomePage({
     const [minRating, setMinRating] = useState(0);
     const [inStockOnly, setInStockOnly] = useState(false);
     const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+    const [page, setPage] = useState(1);
+    const productsPerPage = 6;
 
     const handleReset = () => {
         setMinPrice(0);
@@ -98,6 +101,16 @@ function HomePage({
             }
         }
     );
+    const totalPages = Math.ceil(
+        sortedProducts.length / productsPerPage
+    );
+
+    const startIndex = (page - 1) * productsPerPage;
+
+    const paginatedProducts = sortedProducts.slice(
+        startIndex,
+        startIndex + productsPerPage
+    );
 
     return (
         <main className="min-h-screen bg-[#F5F5F7]">
@@ -149,9 +162,10 @@ function HomePage({
 
                             <select
                                 value={sortBy}
-                                onChange={(event) =>
-                                    setSortBy(event.target.value)
-                                }
+                                onChange={(event) => {
+                                    setSortBy(event.target.value);
+                                    setPage(1);
+                                }}
                                 className="rounded-xl border border-black/10 bg-white px-4 py-2 text-sm font-semibold outline-none focus:ring-2 focus:ring-[#0057FF]/20"
                             >
                                 <option value="popular">
@@ -305,14 +319,60 @@ function HomePage({
                         ) : (
                             // PRODUCTS
                             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                                {sortedProducts.map((product) => (
+                                {paginatedProducts.map((product) => (
                                     <ProductCard
                                         key={product.id}
                                         product={product}
                                     />
                                 ))}
                             </div>
-                        )}Ï
+                        )}
+                        {!loading && totalPages > 1 && (
+                            <div className="mt-10 flex items-center justify-center gap-1.5">
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setPage((current) =>
+                                            Math.max(1, current - 1)
+                                        )
+                                    }
+                                    disabled={page === 1}
+                                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-white transition-colors hover:bg-[#F5F5F7] disabled:cursor-not-allowed disabled:opacity-40"
+                                >
+                                    <ChevronLeft size={15} />
+                                </button>
+
+                                {Array.from(
+                                    { length: totalPages },
+                                    (_, index) => index + 1
+                                ).map((pageNumber) => (
+                                    <button
+                                        key={pageNumber}
+                                        type="button"
+                                        onClick={() => setPage(pageNumber)}
+                                        className={`h-9 w-9 rounded-xl text-sm font-bold transition-colors ${page === pageNumber
+                                                ? "bg-[#0057FF] text-white"
+                                                : "border border-black/10 bg-white text-[#1D1D1F] hover:bg-[#F5F5F7]"
+                                            }`}
+                                    >
+                                        {pageNumber}
+                                    </button>
+                                ))}
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setPage((current) =>
+                                            Math.min(totalPages, current + 1)
+                                        )
+                                    }
+                                    disabled={page === totalPages}
+                                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-black/10 bg-white transition-colors hover:bg-[#F5F5F7] disabled:cursor-not-allowed disabled:opacity-40"
+                                >
+                                    <ChevronRight size={15} />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
