@@ -13,12 +13,14 @@ interface HomePageProps {
     searchTerm: string;
     selectedCategory: string;
     onCategoryChange: (category: string) => void;
+    onSearchChange: (value: string) => void;
 }
 
 function HomePage({
     searchTerm,
     selectedCategory,
     onCategoryChange,
+    onSearchChange,
 }: HomePageProps) {
     const [sortBy, setSortBy] = useState("popular");
 
@@ -35,6 +37,7 @@ function HomePage({
         setMinRating(0);
         setInStockOnly(false);
         onCategoryChange("All");
+        onSearchChange("");
     };
     // STEP 1:
     // Filter products based on search, category and price

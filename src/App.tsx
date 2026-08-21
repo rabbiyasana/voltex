@@ -20,6 +20,7 @@ function App() {
         searchTerm={searchTerm}
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
+        onSearchChange={setSearchTerm}
       />
     </div>
   );
