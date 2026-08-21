@@ -2,6 +2,7 @@ import { useState } from "react";
 import ProductCard from "../features/products/ProductCard";
 import { products } from "../features/products/productsData";
 import FilterSidebar from "../components/FilterSidebar";
+import HeroBanner from "../components/HeroBanner";
 
 interface HomePageProps {
     searchTerm: string;
@@ -92,6 +93,7 @@ function HomePage({
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
                 {/* PAGE HEADING */}
                 <div className="mb-6">
+                <HeroBanner />
                     <h1 className="text-2xl font-extrabold text-[#1D1D1F]">
                         Explore Products
                     </h1>
