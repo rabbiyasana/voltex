@@ -113,7 +113,6 @@ function HomePage({
         startIndex,
         startIndex + productsPerPage
     );
-
     return (
         <main className="min-h-screen bg-[#F5F5F7]">
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -137,7 +136,7 @@ function HomePage({
                     </div>
                     {/* RIGHT SIDE */}
                     <div className="min-w-0 flex-1">
-                        <HeroBanner/>
+                        <HeroBanner />
                         {/* PRODUCT TOOLBAR */}
                         <div className="mb-5 flex items-center gap-3">
                             {/* MOBILE FILTER BUTTON */}
@@ -236,8 +235,8 @@ function HomePage({
                                                             onCategoryChange(category)
                                                         }
                                                         className={`rounded-lg px-2.5 py-1 text-xs font-semibold ${isActive
-                                                                ? "bg-[#0057FF] text-white"
-                                                                : "bg-[#F5F5F7] text-gray-500"
+                                                            ? "bg-[#0057FF] text-white"
+                                                            : "bg-[#F5F5F7] text-gray-500"
                                                             }`}
                                                     >
                                                         {category}
@@ -262,8 +261,8 @@ function HomePage({
                                         >
                                             <div
                                                 className={`flex h-4 w-4 items-center justify-center rounded border-2 ${inStockOnly
-                                                        ? "border-[#0057FF] bg-[#0057FF]"
-                                                        : "border-gray-200"
+                                                    ? "border-[#0057FF] bg-[#0057FF]"
+                                                    : "border-gray-200"
                                                     }`}
                                             >
                                                 {inStockOnly && (
@@ -365,8 +364,8 @@ function HomePage({
                                             setPage(pageNumber)
                                         }
                                         className={`h-9 w-9 rounded-xl text-sm font-bold transition-colors ${page === pageNumber
-                                                ? "bg-[#0057FF] text-white"
-                                                : "border border-black/10 bg-white text-[#1D1D1F] hover:bg-[#F5F5F7]"
+                                            ? "bg-[#0057FF] text-white"
+                                            : "border border-black/10 bg-white text-[#1D1D1F] hover:bg-[#F5F5F7]"
                                             }`}
                                     >
                                         {pageNumber}

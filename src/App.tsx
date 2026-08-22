@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+
 import Header from "./components/Header";
 import HomePage from "./pages/Home";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,12 +19,34 @@ function App() {
         onCategoryChange={setSelectedCategory}
       />
 
-      <HomePage
-        searchTerm={searchTerm}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-        onSearchChange={setSearchTerm}
-      />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePage
+              searchTerm={searchTerm}
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+              onSearchChange={setSearchTerm}
+            />
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <HomePage
+              searchTerm={searchTerm}
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+              onSearchChange={setSearchTerm}
+            />
+          }
+        />
+        <Route
+          path="/products/:id"
+          element={<ProductDetailsPage />}
+        />
+      </Routes>
     </div>
   );
 }

@@ -1,21 +1,23 @@
 import { ShoppingCart, Star } from "lucide-react";
 import type { Product } from "./productType";
+import { useNavigate } from "react-router-dom";
 
 interface ProductCardProps {
   product: Product;
 }
 
 function ProductCard({ product }: ProductCardProps) {
+  const navigate = useNavigate();
   const isOnSale =
     product.originalPrice !== undefined &&
     product.originalPrice > product.price;
 
   const discountPercentage = isOnSale
     ? Math.round(
-        ((product.originalPrice! - product.price) /
-          product.originalPrice!) *
-          100
-      )
+      ((product.originalPrice! - product.price) /
+        product.originalPrice!) *
+      100
+    )
     : null;
 
   const getBadgeClasses = (badge: string) => {
@@ -38,7 +40,12 @@ function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-black/5 bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+    <article
+      onClick={() =>
+        navigate(`/products/${product.id}`)
+      }
+      className="group flex flex-col overflow-hidden rounded-2xl border border-black/5 bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+
       {/* IMAGE */}
       <div className="relative aspect-square overflow-hidden bg-[#E8E8ED]/30">
         <img
@@ -138,11 +145,13 @@ function ProductCard({ product }: ProductCardProps) {
         <button
           type="button"
           disabled={!product.inStock}
-          className={`flex w-full items-center justify-center gap-1.5 rounded-xl py-2.5 text-sm font-bold transition-all ${
-            product.inStock
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+          className={`flex w-full items-center justify-center gap-1.5 rounded-xl py-2.5 text-sm font-bold transition-all ${product.inStock
               ? "bg-[#0057FF] text-white hover:bg-[#0046CC] active:scale-[0.98]"
               : "cursor-not-allowed bg-[#E8E8ED] text-gray-400"
-          }`}
+            }`}
         >
           {product.inStock ? (
             <>
