@@ -1,7 +1,12 @@
-import { Minus, Plus, ShoppingCart, Star } from "lucide-react";
 import { useState } from "react";
-
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../app/store";
+import { addToCart } from "../features/cart/cartSlice";
 import type { Product } from "../features/products/productType";
+
+import { Minus, Plus, ShoppingCart, Star } from "lucide-react";
+
+
 
 interface ProductDetailsCardProps {
     product: Product;
@@ -11,6 +16,7 @@ function ProductDetailsCard({
     product,
 }: ProductDetailsCardProps) {
     const [quantity, setQuantity] = useState(1);
+    const dispatch = useDispatch<AppDispatch>();
     const [selectedImage, setSelectedImage] = useState(product.image);
 
     const isOnSale =
@@ -164,6 +170,14 @@ function ProductDetailsCard({
                 {/* ADD TO CART */}
                 <button
                     type="button"
+                    onClick={() => {
+                        dispatch(
+                          addToCart({
+                            product,
+                            quantity,
+                          })
+                        );
+                      }}
                     disabled={!product.inStock}
                     className={`mt-6 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-extrabold ${product.inStock
                             ? "bg-[#0057FF] text-white hover:bg-[#0046CC]"

@@ -1,12 +1,17 @@
+
+import { useDispatch } from "react-redux";
 import { ShoppingCart, Star } from "lucide-react";
 import type { Product } from "./productType";
 import { useNavigate } from "react-router-dom";
+import type { AppDispatch } from "../../app/store";
+import { addToCart } from "../cart/cartSlice";
 
 interface ProductCardProps {
   product: Product;
 }
 
 function ProductCard({ product }: ProductCardProps) {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const isOnSale =
     product.originalPrice !== undefined &&
@@ -147,6 +152,12 @@ function ProductCard({ product }: ProductCardProps) {
           disabled={!product.inStock}
           onClick={(event) => {
             event.stopPropagation();
+            dispatch(
+              addToCart({
+                product,
+                quantity: 1,
+              })
+            );
           }}
           className={`flex w-full items-center justify-center gap-1.5 rounded-xl py-2.5 text-sm font-bold transition-all ${product.inStock
               ? "bg-[#0057FF] text-white hover:bg-[#0046CC] active:scale-[0.98]"

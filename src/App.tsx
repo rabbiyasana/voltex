@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/Header";
 import HomePage from "./pages/Home";
+import CartPage from "./pages/CartPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
@@ -45,6 +46,10 @@ function App() {
         <Route
           path="/products/:id"
           element={<ProductDetailsPage />}
+        />
+        <Route
+          path="/cart"
+          element={<CartPage />}
         />
       </Routes>
     </div>
