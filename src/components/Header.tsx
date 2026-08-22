@@ -1,7 +1,9 @@
+import { useState } from "react";
 import {
     Search,
     ShoppingCart,
     User,
+    Menu,
     Zap,
   } from "lucide-react";
   
@@ -12,12 +14,15 @@ import {
     onCategoryChange?: (category: string) => void;
   }
   
-  function Header({
+function Header({
     searchTerm = "",
     onSearchChange,
     selectedCategory = "All",
     onCategoryChange,
   }: HeaderProps) {
+    const [mobileMenuOpen, setMobileMenuOpen] =
+      useState(false);
+  
     const categories = [
       "All",
       "Audio",
@@ -29,7 +34,7 @@ import {
     ];
   
     return (
-      <header className="border-b border-black/10 bg-white">
+        <header className="sticky top-0 z-50 border-b border-black/10 bg-white/95 backdrop-blur-md">
         <div className="header-container">
           {/* TOP ROW */}
           <div className="flex h-16 items-center gap-4">
@@ -45,7 +50,7 @@ import {
               </span>
             </div>
   
-            {/* SEARCH */}
+            {/* DESKTOP SEARCH */}
             <div className="desktop-search relative max-w-md flex-1">
               <Search
                 size={15}
@@ -59,22 +64,24 @@ import {
                   onSearchChange?.(event.target.value)
                 }
                 placeholder="Search products, brands..."
-                className="w-full rounded-xl bg-[#E8E8ED] py-2.5 pl-10 pr-4 text-sm outline-none transition-colors focus:ring-2 focus:ring-[#0057FF]/30"
+                className="w-full rounded-xl bg-[#E8E8ED] py-2.5 pl-10 pr-4 text-sm outline-none"
               />
             </div>
   
-            {/* RIGHT ICONS */}
+            {/* RIGHT ACTIONS */}
             <div className="ml-auto flex items-center gap-1">
+              {/* USER - DESKTOP ONLY */}
               <button
                 type="button"
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 transition-colors hover:bg-[#E8E8ED] hover:text-[#1D1D1F]"
+                className="desktop-user flex h-9 w-9 items-center justify-center rounded-xl text-gray-500"
               >
                 <User size={17} />
               </button>
   
+              {/* CART */}
               <button
                 type="button"
-                className="relative flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 transition-colors hover:bg-[#E8E8ED] hover:text-[#1D1D1F]"
+                className="relative flex h-9 w-9 items-center justify-center rounded-xl text-gray-500"
               >
                 <ShoppingCart size={17} />
   
@@ -82,19 +89,33 @@ import {
                   2
                 </span>
               </button>
+  
+              {/* MOBILE MENU BUTTON */}
+              <button
+                type="button"
+                onClick={() =>
+                  setMobileMenuOpen((current) => !current)
+                }
+                className="mobile-menu-button flex h-9 w-9 items-center justify-center rounded-xl bg-[#E8E8ED]"
+              >
+                <Menu size={17} />
+              </button>
             </div>
           </div>
   
-          {/* CATEGORY ROW */}
-          <div className="flex h-12 items-center gap-2">
+          {/* DESKTOP CATEGORY NAVIGATION */}
+          <div className="desktop-category-nav h-12 items-center gap-2">
             {categories.map((category) => {
-              const isActive = selectedCategory === category;
+              const isActive =
+                selectedCategory === category;
   
               return (
                 <button
-                  type="button"
                   key={category}
-                  onClick={() => onCategoryChange?.(category)}
+                  type="button"
+                  onClick={() =>
+                    onCategoryChange?.(category)
+                  }
                   className={`rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${
                     isActive
                       ? "bg-[#0057FF]/10 text-[#0057FF]"
@@ -106,9 +127,57 @@ import {
               );
             })}
           </div>
+  
+          {/* MOBILE EXPANDED MENU */}
+          {mobileMenuOpen && (
+            <div className="mobile-menu-panel border-t border-black/10 py-3">
+              {/* SEARCH */}
+              <div className="relative">
+                <Search
+                  size={15}
+                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                />
+  
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(event) =>
+                    onSearchChange?.(event.target.value)
+                  }
+                  placeholder="Search..."
+                  className="w-full rounded-xl bg-[#E8E8ED] py-2.5 pl-9 pr-4 text-sm outline-none"
+                />
+              </div>
+  
+              {/* CATEGORIES */}
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {categories.map((category) => {
+                  const isActive =
+                    selectedCategory === category;
+  
+                  return (
+                    <button
+                      key={category}
+                      type="button"
+                      onClick={() => {
+                        onCategoryChange?.(category);
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors ${
+                        isActive
+                          ? "bg-[#0057FF] text-white"
+                          : "bg-[#E8E8ED] text-gray-500"
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </header>
     );
   }
-  
-  export default Header;
+  export default Header
