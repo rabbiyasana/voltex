@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import HomePage from "./pages/Home";
 import CartPage from "./pages/CartPage";
+import LoginPage from "./pages/LoginPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 
@@ -55,6 +56,10 @@ function App() {
         <Route
           path="/checkout"
           element={<CheckoutPage />}
+        />
+        <Route
+          path="/login"
+          element={<LoginPage />}
         />
       </Routes>
     </div>

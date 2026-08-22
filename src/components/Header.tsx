@@ -51,7 +51,7 @@ function Header({
         {/* TOP ROW */}
         <div className="flex h-16 items-center gap-4">
           {/* LOGO */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5" onClick={() => navigate("/")}>
             <Zap
               size={20}
               className="fill-[#0057FF] text-[#0057FF]"
@@ -82,13 +82,6 @@ function Header({
 
           {/* RIGHT ACTIONS */}
           <div className="ml-auto flex items-center gap-1">
-            {/* USER - DESKTOP ONLY */}
-            <button
-              type="button"
-              className="desktop-user flex h-9 w-9 items-center justify-center rounded-xl text-gray-500"
-            >
-              <User size={17} />
-            </button>
 
             {/* CART */}
             <button
@@ -104,7 +97,15 @@ function Header({
                 </span>
               )}
             </button>
-
+            {/* user login */}
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+              className="desktop-user flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 transition-colors hover:bg-[#E8E8ED] hover:text-[#1D1D1F]"
+              aria-label="Login"
+            >
+              <User size={17} />
+            </button>
             {/* MOBILE MENU BUTTON */}
             <button
               type="button"
@@ -132,8 +133,8 @@ function Header({
                   onCategoryChange?.(category)
                 }
                 className={`rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${isActive
-                    ? "bg-[#0057FF]/10 text-[#0057FF]"
-                    : "text-gray-500 hover:bg-[#E8E8ED] hover:text-[#1D1D1F]"
+                  ? "bg-[#0057FF]/10 text-[#0057FF]"
+                  : "text-gray-500 hover:bg-[#E8E8ED] hover:text-[#1D1D1F]"
                   }`}
               >
                 {category}
@@ -178,8 +179,8 @@ function Header({
                       setMobileMenuOpen(false);
                     }}
                     className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors ${isActive
-                        ? "bg-[#0057FF] text-white"
-                        : "bg-[#E8E8ED] text-gray-500"
+                      ? "bg-[#0057FF] text-white"
+                      : "bg-[#E8E8ED] text-gray-500"
                       }`}
                   >
                     {category}
@@ -187,6 +188,18 @@ function Header({
                 );
               })}
             </div>
+            <button
+              type="button"
+              onClick={() => {
+                navigate("/login");
+                setMobileMenuOpen(false);
+              }}
+              className="mt-4 flex w-full items-center gap-3 rounded-xl border border-black/10 px-4 py-3 text-left text-sm font-bold text-[#1D1D1F]"
+            >
+              <User size={17} />
+
+              Login
+            </button>
           </div>
         )}
       </div>
