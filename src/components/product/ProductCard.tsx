@@ -1,10 +1,10 @@
 
 import { useDispatch } from "react-redux";
 import { ShoppingCart, Star } from "lucide-react";
-import type { Product } from "./productType";
+import type { Product } from "../../types/productType";
 import { useNavigate } from "react-router-dom";
 import type { AppDispatch } from "../../app/store";
-import { addToCart } from "../cart/cartSlice";
+import { addToCart } from "../../slices/cartSlice";
 
 interface ProductCardProps {
   product: Product;

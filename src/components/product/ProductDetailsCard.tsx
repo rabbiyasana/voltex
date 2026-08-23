@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";
-import { addToCart } from "../../features/cart/cartSlice";
-import type { Product } from "../../features/products/productType";
+import { addToCart } from "../../slices/cartSlice";
+import type { Product } from "../../types/productType";
 
 import { Minus, Plus, ShoppingCart, Star } from "lucide-react";
 

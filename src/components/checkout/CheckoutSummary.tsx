@@ -1,4 +1,4 @@
-import type { Product } from "../../features/products/productType";
+import type { Product } from "../../types/productType";
 
 interface CheckoutItem {
   product: Product;

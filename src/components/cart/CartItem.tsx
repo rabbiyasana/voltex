@@ -11,8 +11,8 @@ import {
     decreaseQuantity,
     increaseQuantity,
     removeFromCart,
-  } from "../../features/cart/cartSlice";
-  import type { Product } from "../../features/products/productType";
+  } from "../../slices/cartSlice";
+  import type { Product } from "../../types/productType";
   
   interface CartItemProps {
     item: {

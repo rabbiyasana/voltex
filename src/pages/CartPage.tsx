@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import type { AppDispatch, RootState } from "../app/store";
-import { clearCart } from "../features/cart/cartSlice";
+import { clearCart } from "../slices/cartSlice";
 
 import CartItem from "../components/cart/CartItem";
 import EmptyCart from "../components/cart/EmptyCart";

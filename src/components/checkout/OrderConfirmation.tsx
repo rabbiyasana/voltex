@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import type { Product } from "../../features/products/productType";
+import type { Product } from "../../types/productType";
 interface OrderItem {
   product: Product;
   quantity: number;

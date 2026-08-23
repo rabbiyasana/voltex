@@ -4,7 +4,7 @@ import { products } from "../features/products/productsData";
 import { Check, ChevronLeft, ChevronRight, ChevronDown, Search, SlidersHorizontal, } from "lucide-react";
 
 import FilterSidebar from "../components/product/FilterSidebar";
-import ProductCard from "../features/products/ProductCard";
+import ProductCard from "../components/product/ProductCard";
 import HeroBanner from "../components/product/HeroBanner";
 import LoadingSkeleton from "../components/product/LoadingSkeleton";
 

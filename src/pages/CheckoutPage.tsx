@@ -9,7 +9,7 @@ import type {
   RootState,
 } from "../app/store";
 
-import { clearCart } from "../features/cart/cartSlice";
+import { clearCart } from "../slices/cartSlice";
 
 import CheckoutProgress from "../components/checkout/CheckoutProgress";
 import ContactStep from "../components/checkout/ContactStep";
@@ -18,7 +18,7 @@ import PaymentStep from "../components/checkout/PaymentStep";
 import CheckoutSummary from "../components/checkout/CheckoutSummary";
 import OrderConfirmation from "../components/checkout/OrderConfirmation";
 
-import type { Product } from "../features/products/productType";
+import type { Product } from "../types/productType";
 
 interface OrderItem {
   product: Product;
