@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { products } from "../features/products/productsData";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../app/store";
+import { fetchProducts } from "../slices/productSlice";
 
 import { Check, ChevronLeft, ChevronRight, ChevronDown, Search, SlidersHorizontal, } from "lucide-react";
 
@@ -22,9 +25,9 @@ function HomePage({
     onCategoryChange,
     onSearchChange,
 }: HomePageProps) {
+    const dispatch = useDispatch<AppDispatch>();
     const [sortBy, setSortBy] = useState("popular");
 
-    const [loading] = useState(false);
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(2000);
     const [minRating, setMinRating] = useState(0);
@@ -33,7 +36,9 @@ function HomePage({
 
     const [page, setPage] = useState(1);
     const productsPerPage = 6;
-
+    const { items: products, loading, error, } = useSelector(
+        (state: RootState) => state.products
+    );
     const handleReset = () => {
         setMinPrice(0);
         setMaxPrice(2000);
@@ -113,6 +118,14 @@ function HomePage({
         startIndex,
         startIndex + productsPerPage
     );
+    useEffect(() => {
+        dispatch(
+            fetchProducts({
+                limit: 12,
+                skip: 0,
+            })
+        );
+    }, [dispatch]);
     return (
         <main className="min-h-screen bg-[#F5F5F7]">
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -293,11 +306,20 @@ function HomePage({
 
                         {/* PRODUCTS */}
                         {loading ? (
-                            // LOADING STATE
                             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
                                 {Array.from({ length: 6 }).map((_, index) => (
                                     <LoadingSkeleton key={index} />
                                 ))}
+                            </div>
+                        ) : error ? (
+                            <div className="flex flex-col items-center justify-center rounded-2xl bg-white px-6 py-20 text-center">
+                                <h2 className="text-lg font-extrabold text-[#1D1D1F]">
+                                    Failed to load products
+                                </h2>
+
+                                <p className="mt-2 text-sm text-red-500">
+                                    {error}
+                                </p>
                             </div>
                         ) : sortedProducts.length === 0 ? (
                             // EMPTY STATE

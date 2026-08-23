@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/layout/Header";
-import HomePage from "./pages/Home";
+import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
 import CheckoutPage from "./pages/CheckoutPage";
