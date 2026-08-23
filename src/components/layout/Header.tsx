@@ -44,6 +44,10 @@ function Header({
     0
   );
   const navigate = useNavigate();
+  const handleCategoryClick = (category: string) => {
+    onCategoryChange(category);
+    navigate("/products");
+  };
   return (
 
     <header className="sticky top-0 z-50 border-b border-black/10 bg-white/95 backdrop-blur-md">
@@ -111,6 +115,7 @@ function Header({
               type="button"
               onClick={() =>
                 setMobileMenuOpen((current) => !current)
+                
               }
               className="mobile-menu-button flex h-9 w-9 items-center justify-center rounded-xl bg-[#E8E8ED]"
             >
@@ -129,9 +134,7 @@ function Header({
               <button
                 key={category}
                 type="button"
-                onClick={() =>
-                  onCategoryChange?.(category)
-                }
+                onClick={() => {handleCategoryClick(category);}}
                 className={`rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${isActive
                   ? "bg-[#0057FF]/10 text-[#0057FF]"
                   : "text-gray-500 hover:bg-[#E8E8ED] hover:text-[#1D1D1F]"
@@ -175,7 +178,7 @@ function Header({
                     key={category}
                     type="button"
                     onClick={() => {
-                      onCategoryChange?.(category);
+                      handleCategoryClick(category);
                       setMobileMenuOpen(false);
                     }}
                     className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors ${isActive
