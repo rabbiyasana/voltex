@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
+
+import type { RootState } from "./app/store";
 
 import Header from "./components/layout/Header";
 import HomePage from "./pages/HomePage";
@@ -10,12 +13,26 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
+
   const [selectedCategory, setSelectedCategory] =
     useState("All");
+    const products = useSelector(
+      (state: RootState) => state.products.items
+    );
+  
+    const categories = [
+      "All",
+      ...Array.from(
+        new Set(
+          products.map((product) => product.category)
+        )
+      ),
+    ];
 
   return (
     <div className="min-h-screen bg-[#F5F5F7]">
       <Header
+        categories={categories}
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
         selectedCategory={selectedCategory}

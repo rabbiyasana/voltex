@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 interface HeaderProps {
+  categories: string[];
   searchTerm?: string;
   onSearchChange?: (value: string) => void;
   selectedCategory?: string;
@@ -18,23 +19,15 @@ interface HeaderProps {
 }
 
 function Header({
-  searchTerm = "",
+  categories,
+  searchTerm,
+  selectedCategory,
   onSearchChange,
-  selectedCategory = "All",
   onCategoryChange,
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] =
     useState(false);
 
-  const categories = [
-    "All",
-    "Audio",
-    "Laptops",
-    "Wearables",
-    "Cameras",
-    "TVs",
-    "Gaming",
-  ];
   const cartItems = useSelector(
     (state: RootState) => state.cart.items
   );
@@ -43,9 +36,11 @@ function Header({
     (total, item) => total + item.quantity,
     0
   );
+
   const navigate = useNavigate();
+
   const handleCategoryClick = (category: string) => {
-    onCategoryChange(category);
+    onCategoryChange?.(category);
     navigate("/products");
   };
   return (
