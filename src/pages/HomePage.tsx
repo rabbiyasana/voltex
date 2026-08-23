@@ -37,8 +37,8 @@ function HomePage({
     const [showMobileFilters, setShowMobileFilters] = useState(false);
 
     const [page, setPage] = useState(1);
-    const productsPerPage = 6;
-    const { items: products, loading, error, } = useSelector(
+    const productsPerPage = 12;
+    const { items: products, loading, error, total } = useSelector(
         (state: RootState) => state.products
     );
     const handleReset = () => {
@@ -110,24 +110,17 @@ function HomePage({
             }
         }
     );
-    const totalPages = Math.ceil(
-        sortedProducts.length / productsPerPage
-    );
-
-    const startIndex = (page - 1) * productsPerPage;
-
-    const paginatedProducts = sortedProducts.slice(
-        startIndex,
-        startIndex + productsPerPage
-    );
+    const totalPages =Math.ceil(total / productsPerPage);
     useEffect(() => {
+        const skip =(page - 1) * productsPerPage;
+      
         dispatch(
-            fetchProducts({
-                limit: 12,
-                skip: 0,
-            })
+          fetchProducts({
+            limit: productsPerPage,
+            skip,
+          })
         );
-    }, [dispatch]);
+      }, [dispatch, page]);
     return (
         <main className="min-h-screen bg-[#F5F5F7]">
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -345,7 +338,7 @@ function HomePage({
                         ) : (
                             // PRODUCTS
                             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
-                                {paginatedProducts.map((product) => (
+                               {sortedProducts.map((product) => (
                                     <ProductCard
                                         key={product.id}
                                         product={product}

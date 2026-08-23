@@ -30,8 +30,14 @@ interface ProductsResponse {
 }
 
 function mapProduct(product: DummyProduct): Product {
-  const originalPrice =product.discountPercentage > 0? product.price /(1 - product.discountPercentage / 100)
-      : undefined;
+    const originalPrice =product.discountPercentage > 0
+    ? Number(
+        (
+          product.price /
+          (1 - product.discountPercentage / 100)
+        ).toFixed(2)
+      )
+    : undefined;
 
   return {
     id: String(product.id),
