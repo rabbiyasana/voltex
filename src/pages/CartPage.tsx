@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../app/store";
 import { clearCart } from "../features/cart/cartSlice";
 
-import CartItem from "../components/CartItem";
-import EmptyCart from "../components/EmptyCart";
-import OrderSummary from "../components/OrderSummary";
+import CartItem from "../components/cart/CartItem";
+import EmptyCart from "../components/cart/EmptyCart";
+import OrderSummary from "../components/cart/OrderSummary";
 
 function CartPage() {
   const dispatch = useDispatch<AppDispatch>();

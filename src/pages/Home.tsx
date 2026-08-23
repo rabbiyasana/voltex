@@ -3,10 +3,10 @@ import { products } from "../features/products/productsData";
 
 import { Check, ChevronLeft, ChevronRight, ChevronDown, Search, SlidersHorizontal, } from "lucide-react";
 
-import FilterSidebar from "../components/FilterSidebar";
+import FilterSidebar from "../components/product/FilterSidebar";
 import ProductCard from "../features/products/ProductCard";
-import HeroBanner from "../components/HeroBanner";
-import LoadingSkeleton from "../components/LoadingSkeleton";
+import HeroBanner from "../components/product/HeroBanner";
+import LoadingSkeleton from "../components/product/LoadingSkeleton";
 
 
 interface HomePageProps {

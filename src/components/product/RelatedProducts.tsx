@@ -1,5 +1,5 @@
-import ProductCard from "../features/products/ProductCard";
-import type { Product } from "../features/products/productType";
+import ProductCard from "../../features/products/ProductCard";
+import type { Product } from "../../features/products/productType";
 
 interface RelatedProductsProps {
   currentProduct: Product;

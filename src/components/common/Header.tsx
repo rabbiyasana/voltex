@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import type { RootState } from "../app/store";
+import type { RootState } from "../../app/store";
 import {
   Search,
   ShoppingCart,

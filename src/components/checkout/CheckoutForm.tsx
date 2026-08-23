@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../app/store";
-import { clearCart } from "../features/cart/cartSlice";
+import type { AppDispatch } from "../../app/store";
+import { clearCart } from "../../features/cart/cartSlice";
 
 interface CheckoutFormState {
   fullName: string;

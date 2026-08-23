@@ -11,12 +11,12 @@ import type {
 
 import { clearCart } from "../features/cart/cartSlice";
 
-import CheckoutProgress from "../components/CheckoutProgress";
-import ContactStep from "../components/ContactStep";
-import ShippingStep from "../components/ShippingStep";
-import PaymentStep from "../components/PaymentStep";
-import CheckoutSummary from "../components/CheckoutSummary";
-import OrderConfirmation from "../components/OrderConfirmation";
+import CheckoutProgress from "../components/checkout/CheckoutProgress";
+import ContactStep from "../components/checkout/ContactStep";
+import ShippingStep from "../components/checkout/ShippingStep";
+import PaymentStep from "../components/checkout/PaymentStep";
+import CheckoutSummary from "../components/checkout/CheckoutSummary";
+import OrderConfirmation from "../components/checkout/OrderConfirmation";
 
 import type { Product } from "../features/products/productType";
 

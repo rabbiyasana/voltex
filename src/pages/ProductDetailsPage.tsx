@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 
-import ProductDetailsCard from "../components/ProductDetailsCard";
+import ProductDetailsCard from "../components/product/ProductDetailsCard";
 import { products } from "../features/products/productsData";
-import RelatedProducts from "../components/RelatedProducts";
+import RelatedProducts from "../components/product/RelatedProducts";
 
 function ProductDetailsPage() {
     const { id } = useParams();

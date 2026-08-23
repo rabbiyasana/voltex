@@ -6,13 +6,13 @@ import {
   import { useDispatch } from "react-redux";
   import { useNavigate } from "react-router-dom";
   
-  import type { AppDispatch } from "../app/store";
+  import type { AppDispatch } from "../../app/store";
   import {
     decreaseQuantity,
     increaseQuantity,
     removeFromCart,
-  } from "../features/cart/cartSlice";
-  import type { Product } from "../features/products/productType";
+  } from "../../features/cart/cartSlice";
+  import type { Product } from "../../features/products/productType";
   
   interface CartItemProps {
     item: {
