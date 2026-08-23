@@ -12,8 +12,12 @@ interface CartState {
   items: CartItem[];
 }
 
+const savedCart = localStorage.getItem("voltex-cart");
+
 const initialState: CartState = {
-  items: [],
+  items: savedCart
+    ? JSON.parse(savedCart)
+    : [],
 };
 
 interface AddToCartPayload {
