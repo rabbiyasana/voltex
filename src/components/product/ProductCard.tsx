@@ -136,12 +136,12 @@ function ProductCard({ product }: ProductCardProps) {
         {/* PRICE */}
         <div className="mt-auto flex items-center gap-2 pt-1">
           <span className="text-base font-extrabold text-[#1D1D1F]">
-            ${product.price}
+          ${product.price.toFixed(2)}
           </span>
 
           {isOnSale && (
             <span className="text-xs text-gray-400 line-through">
-              ${product.originalPrice}
+               ${product.originalPrice.toFixed(2)}
             </span>
           )}
         </div>

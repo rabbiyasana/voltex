@@ -2,7 +2,13 @@ import type { Product } from "../types/productType";
 
 const BASE_URL =import.meta.env.VITE_API_BASE_URL;
 
-
+interface DummyReview {
+    rating: number;
+    comment: string;
+    date: string;
+    reviewerName: string;
+    reviewerEmail: string;
+  }
 interface DummyProduct {
   id: number;
   title: string;
@@ -15,12 +21,14 @@ interface DummyProduct {
   brand?: string;
   thumbnail: string;
   images: string[];
+  reviews: DummyReview[];
   warrantyInformation?: string;
   shippingInformation?: string;
   availabilityStatus?: string;
   returnPolicy?: string;
   sku?: string;
 }
+
 
 interface ProductsResponse {
   products: DummyProduct[];
@@ -47,7 +55,7 @@ function mapProduct(product: DummyProduct): Product {
     price: product.price,
     originalPrice,
     rating: product.rating,
-    reviewCount: 0,
+    reviewCount:product.reviews.length,
     image: product.thumbnail,
     images: product.images,
     inStock: product.stock > 0,
