@@ -13,6 +13,7 @@ import LoadingSkeleton from "../components/product/LoadingSkeleton";
 
 
 interface HomePageProps {
+    categories: string[];
     searchTerm: string;
     selectedCategory: string;
     onCategoryChange: (category: string) => void;
@@ -20,6 +21,7 @@ interface HomePageProps {
 }
 
 function HomePage({
+    categories,
     searchTerm,
     selectedCategory,
     onCategoryChange,
@@ -39,12 +41,6 @@ function HomePage({
     const { items: products, loading, error, } = useSelector(
         (state: RootState) => state.products
     );
-    const categories = ["All", ...Array.from(
-        new Set(
-            products.map((product) => product.category)
-        )
-    ),
-    ];
     const handleReset = () => {
         setMinPrice(0);
         setMaxPrice(2000);

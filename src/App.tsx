@@ -16,18 +16,18 @@ function App() {
 
   const [selectedCategory, setSelectedCategory] =
     useState("All");
-    const products = useSelector(
-      (state: RootState) => state.products.items
-    );
-  
-    const categories = [
-      "All",
-      ...Array.from(
-        new Set(
-          products.map((product) => product.category)
-        )
-      ),
-    ];
+  const products = useSelector(
+    (state: RootState) => state.products.items
+  );
+
+  const categories = [
+    "All",
+    ...Array.from(
+      new Set(
+        products.map((product) => product.category)
+      )
+    ),
+  ];
 
   return (
     <div className="min-h-screen bg-[#F5F5F7]">
@@ -44,6 +44,7 @@ function App() {
           path="/"
           element={
             <HomePage
+              categories={categories}
               searchTerm={searchTerm}
               selectedCategory={selectedCategory}
               onCategoryChange={setSelectedCategory}
@@ -55,6 +56,7 @@ function App() {
           path="/products"
           element={
             <HomePage
+              categories={categories}
               searchTerm={searchTerm}
               selectedCategory={selectedCategory}
               onCategoryChange={setSelectedCategory}
