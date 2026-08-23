@@ -1,29 +1,23 @@
 import { Check, Star } from "lucide-react";
 
 interface FilterSidebarProps {
+  categories: string[];
   selectedCategory: string;
-
   minPrice: number;
   maxPrice: number;
-
   minRating: number;
-
   inStockOnly: boolean;
-
   onCategoryChange: (category: string) => void;
-
-  onMinPriceChange: (price: number) => void;
-  onMaxPriceChange: (price: number) => void;
-
-  onRatingChange: (rating: number) => void;
-
+  onMinPriceChange: (value: number) => void;
+  onMaxPriceChange: (value: number) => void;
+  onRatingChange: (value: number) => void;
   onStockChange: (value: boolean) => void;
-
   onReset: () => void;
 }
 
 function FilterSidebar({
   selectedCategory,
+  categories,
   minPrice,
   maxPrice,
   minRating,
@@ -35,21 +29,7 @@ function FilterSidebar({
   onStockChange,
   onReset,
 }: FilterSidebarProps) {
-  const categories = [
-    "All",
-    "Audio",
-    "Laptops",
-    "Wearables",
-    "Cameras",
-    "Tablets",
-    "TVs",
-    "Accessories",
-    "Lifestyle",
-    "Gaming",
-    "Phones",
-  ];
-
-  const ratingOptions = [0,1,2,3, 4, 4.5];
+  const ratingOptions = [0, 1, 2, 3, 4, 4.5];
 
   return (
     <aside className="w-52 flex-shrink-0">

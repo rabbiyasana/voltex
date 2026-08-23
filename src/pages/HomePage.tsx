@@ -39,6 +39,12 @@ function HomePage({
     const { items: products, loading, error, } = useSelector(
         (state: RootState) => state.products
     );
+    const categories = ["All", ...Array.from(
+        new Set(
+            products.map((product) => product.category)
+        )
+    ),
+    ];
     const handleReset = () => {
         setMinPrice(0);
         setMaxPrice(2000);
@@ -135,6 +141,7 @@ function HomePage({
                     {/* FILTER SIDEBAR */}
                     <div className="desktop-filter-sidebar">
                         <FilterSidebar
+                            categories={categories}
                             selectedCategory={selectedCategory}
                             minPrice={minPrice}
                             maxPrice={maxPrice}
@@ -228,15 +235,7 @@ function HomePage({
                                         </p>
 
                                         <div className="flex flex-wrap gap-1.5">
-                                            {[
-                                                "All",
-                                                "Audio",
-                                                "Laptops",
-                                                "Wearables",
-                                                "Cameras",
-                                                "TVs",
-                                                "Gaming",
-                                            ].map((category) => {
+                                            {categories.map((category) => {
                                                 const isActive =
                                                     selectedCategory === category;
 
