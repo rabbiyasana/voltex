@@ -10,12 +10,13 @@ import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import RegisterPage from "./pages/RegisterPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [selectedCategory, setSelectedCategory] =useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const dispatch = useDispatch<AppDispatch>();
 
   const categoriesFromApi = useSelector(
@@ -82,6 +83,10 @@ function App() {
         <Route
           path="/login"
           element={<LoginPage />}
+        />
+        <Route
+          path="/register"
+          element={<RegisterPage />}
         />
       </Routes>
     </div>

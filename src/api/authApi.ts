@@ -17,6 +17,21 @@ interface LoginResponse {
   accessToken: string;
   refreshToken: string;
 }
+interface RegisterPayload {
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    password: string;
+  }
+  
+  interface RegisterResponse {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+  }
 
 export async function loginUser(credentials: LoginCredentials): Promise<LoginResponse> {
   const response =await apiClient.post<LoginResponse>(
@@ -26,3 +41,14 @@ export async function loginUser(credentials: LoginCredentials): Promise<LoginRes
 
   return response.data;
 }
+export async function registerUser(
+    payload: RegisterPayload
+  ): Promise<RegisterResponse> {
+    const response =
+      await apiClient.post<RegisterResponse>(
+        "/users/add",
+        payload
+      );
+  
+    return response.data;
+  }

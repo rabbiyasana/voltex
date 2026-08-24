@@ -1,9 +1,9 @@
 import { useState } from "react";
-import {Eye,EyeOff,LockKeyhole,User,} from "lucide-react";
+import { Eye, EyeOff, LockKeyhole, User, } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import type {AppDispatch,RootState,} from "../app/store";
+import type { AppDispatch, RootState, } from "../app/store";
 import { loginThunk } from "../slices/authSlice";
 
 interface LoginFormState {
@@ -16,7 +16,7 @@ function LoginPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
 
-    const {loading,error,} = useSelector((state: RootState) => state.auth);
+    const { loading, error, } = useSelector((state: RootState) => state.auth);
 
     const [form, setForm] =
         useState<LoginFormState>({
@@ -219,6 +219,16 @@ function LoginPage() {
                             ? "Signing in..."
                             : "Login"}
                     </button>
+                    <p className="text-center text-sm text-gray-500">
+                        Don't have an account?{" "}
+                        <button
+                            type="button"
+                            onClick={() => navigate("/register")}
+                            className="font-bold text-[#0057FF]"
+                        >
+                            Create Account
+                        </button>
+                    </p>
                 </form>
             </div>
         </main>

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginUser } from "../api/authApi";
+import { loginUser, registerUser, } from "../api/authApi";
 
 interface AuthUser {
   id: number;
@@ -17,6 +17,9 @@ interface AuthState {
   refreshToken: string | null;
   loading: boolean;
   error: string | null;
+  registerLoading: boolean;
+  registerError: string | null;
+  registerSuccess: boolean;
   isAuthenticated: boolean;
 }
 const savedAuth =localStorage.getItem("voltex-auth");
@@ -29,6 +32,9 @@ const initialState: AuthState =
         refreshToken: null,
         loading: false,
         error: null,
+        registerLoading: false,
+        registerError: null,
+        registerSuccess: false,      
         isAuthenticated: false,
       };
 
@@ -47,6 +53,31 @@ export const loginThunk = createAsyncThunk(
     });
   }
 );
+export const registerThunk =
+  createAsyncThunk(
+    "auth/register",
+    async ({
+      firstName,
+      lastName,
+      email,
+      username,
+      password,
+    }: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      username: string;
+      password: string;
+    }) => {
+      return await registerUser({
+        firstName,
+        lastName,
+        email,
+        username,
+        password,
+      });
+    }
+  );
 
 const authSlice = createSlice({
   name: "auth",
@@ -98,7 +129,35 @@ const authSlice = createSlice({
         state.error =
           action.error.message ??
           "Login failed.";
-      });
+      })
+      .addCase(
+        registerThunk.pending,
+        (state) => {
+          state.registerLoading = true;
+          state.registerError = null;
+          state.registerSuccess = false;
+        }
+      )
+      
+      .addCase(
+        registerThunk.fulfilled,
+        (state) => {
+          state.registerLoading = false;
+          state.registerSuccess = true;
+        }
+      )
+      
+      .addCase(
+        registerThunk.rejected,
+        (state, action) => {
+          state.registerLoading = false;
+          state.registerSuccess = false;
+      
+          state.registerError =
+            action.error.message ??
+            "Registration failed.";
+        }
+      );
   },
 });
 
