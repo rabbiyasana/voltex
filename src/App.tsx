@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 
-import type { RootState } from "./app/store";
+import type { AppDispatch, RootState } from "./app/store";
+import { fetchProductCategories } from "./slices/productSlice";
 
 import Header from "./components/layout/Header";
 import HomePage from "./pages/HomePage";
@@ -14,21 +15,23 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [selectedCategory, setSelectedCategory] =
-    useState("All");
-  const products = useSelector(
-    (state: RootState) => state.products.items
+  const [selectedCategory, setSelectedCategory] =useState("All");
+  const dispatch = useDispatch<AppDispatch>();
+
+  const categoriesFromApi = useSelector(
+    (state: RootState) => state.products.categories
   );
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  };
+  useEffect(() => {
+    dispatch(fetchProductCategories());
+  }, [dispatch]);
 
   const categories = [
     "All",
-    ...Array.from(
-      new Set(
-        products.map((product) => product.category)
-      )
-    ),
+    ...categoriesFromApi,
   ];
-
   return (
     <div className="min-h-screen bg-[#F5F5F7]">
       <Header

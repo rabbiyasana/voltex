@@ -38,7 +38,7 @@ function Header({
   );
 
   const navigate = useNavigate();
-
+  const desktopCategories = categories.slice(0, 6);
   const handleCategoryClick = (category: string) => {
     onCategoryChange?.(category);
     navigate("/products");
@@ -121,7 +121,7 @@ function Header({
 
         {/* DESKTOP CATEGORY NAVIGATION */}
         <div className="desktop-category-nav h-12 items-center gap-2">
-          {categories.map((category) => {
+        {desktopCategories.map((category) => {
             const isActive =
               selectedCategory === category;
 

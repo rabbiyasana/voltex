@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../app/store";
-import { fetchProducts } from "../slices/productSlice";
+import { fetchProducts,fetchSearchProducts, fetchProductsByCategory, } from "../slices/productSlice";
 
 import { Check, ChevronLeft, ChevronRight, ChevronDown, Search, SlidersHorizontal, } from "lucide-react";
 
@@ -35,6 +35,7 @@ function HomePage({
     const [minRating, setMinRating] = useState(0);
     const [inStockOnly, setInStockOnly] = useState(false);
     const [showMobileFilters, setShowMobileFilters] = useState(false);
+    const [debouncedSearchTerm, setDebouncedSearchTerm] =useState(searchTerm);
 
     const [page, setPage] = useState(1);
     const productsPerPage = 12;
@@ -54,7 +55,7 @@ function HomePage({
     // STEP 1:
     // Filter products based on search, category and price
     const filteredProducts = products.filter((product) => {
-        const value = searchTerm.trim().toLowerCase();
+        const value = debouncedSearchTerm.trim().toLowerCase();
 
         const searchableText = `
           ${product.name}
@@ -111,8 +112,52 @@ function HomePage({
         }
     );
     const totalPages =Math.ceil(total / productsPerPage);
-    useEffect(() => {
-        const skip =(page - 1) * productsPerPage;
+    const handleCategoryChange = (
+        category: string
+      ) => {
+        setPage(1);
+        onCategoryChange(category);
+      };
+      useEffect(() => {
+        const timeout = setTimeout(() => {
+          setDebouncedSearchTerm(searchTerm);
+          setPage(1);
+        }, 500);
+      
+        return () => {
+          clearTimeout(timeout);
+        };
+      }, [searchTerm]);
+      useEffect(() => {
+        const skip =
+          (page - 1) * productsPerPage;
+      
+        const query =
+          debouncedSearchTerm.trim();
+      
+        if (query) {
+          dispatch(
+            fetchSearchProducts({
+              query,
+              limit: productsPerPage,
+              skip,
+            })
+          );
+      
+          return;
+        }
+      
+        if (selectedCategory !== "All") {
+          dispatch(
+            fetchProductsByCategory({
+              category: selectedCategory,
+              limit: productsPerPage,
+              skip,
+            })
+          );
+      
+          return;
+        }
       
         dispatch(
           fetchProducts({
@@ -120,7 +165,12 @@ function HomePage({
             skip,
           })
         );
-      }, [dispatch, page]);
+      }, [
+        dispatch,
+        page,
+        selectedCategory,
+        debouncedSearchTerm,
+      ]);
     return (
         <main className="min-h-screen bg-[#F5F5F7]">
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -136,7 +186,7 @@ function HomePage({
                             maxPrice={maxPrice}
                             minRating={minRating}
                             inStockOnly={inStockOnly}
-                            onCategoryChange={onCategoryChange}
+                            onCategoryChange={handleCategoryChange}
                             onMinPriceChange={setMinPrice}
                             onMaxPriceChange={setMaxPrice}
                             onRatingChange={setMinRating} onStockChange={setInStockOnly}

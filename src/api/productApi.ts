@@ -104,3 +104,66 @@ export async function getProducts(limit = 12,skip = 0) {
     limit: data.limit,
   };
 }
+
+export async function getProductCategories(): Promise<string[]> {
+    const response = await fetch(
+      `${BASE_URL}/products/category-list`
+    );
+  
+    if (!response.ok) {
+      throw new Error(
+        "Failed to fetch product categories."
+      );
+    }
+  
+    return await response.json();
+  }
+
+export async function getProductsByCategory(
+category: string,
+limit = 12,
+skip = 0
+) {
+const response = await fetch(
+    `${BASE_URL}/products/category/${category}?limit=${limit}&skip=${skip}`
+);
+
+if (!response.ok) {
+    throw new Error(
+    "Failed to fetch products by category."
+    );
+}
+
+const data: ProductsResponse =
+    await response.json();
+
+return {
+    products: data.products.map(mapProduct),
+    total: data.total,
+    skip: data.skip,
+    limit: data.limit,
+};
+}
+export async function searchProducts(
+    query: string,
+    limit = 12,
+    skip = 0
+  ) {
+    const response = await fetch(
+      `${BASE_URL}/products/search?q=${encodeURIComponent(query)}&limit=${limit}&skip=${skip}`
+    );
+  
+    if (!response.ok) {
+      throw new Error("Failed to search products.");
+    }
+  
+    const data: ProductsResponse =
+      await response.json();
+  
+    return {
+      products: data.products.map(mapProduct),
+      total: data.total,
+      skip: data.skip,
+      limit: data.limit,
+    };
+  }
