@@ -1,70 +1,86 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import type { AppDispatch, RootState } from "../app/store";
+import { fetchProductById } from "../slices/productSlice";
 
 import ProductDetailsCard from "../components/product/ProductDetailsCard";
-import { products } from "../features/products/productsData";
 import RelatedProducts from "../components/product/RelatedProducts";
 
 function ProductDetailsPage() {
     const { id } = useParams();
-
-    const product = products.find(
-        (product) => product.id === id
-    );
-
-    if (!product) {
-        return (
-            <main className="min-h-screen bg-[#F5F5F7]">
-                <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-                    <div className="rounded-2xl bg-white p-10 text-center">
-                        <h1 className="text-xl font-extrabold text-[#1D1D1F]">
-                            Product not found
-                        </h1>
-                    </div>
-                </div>
-            </main>
-        );
+    const dispatch = useDispatch<AppDispatch>();
+    const {
+        selectedProduct,
+        loading,
+        error,
+        items: products,
+      } = useSelector(
+        (state: RootState) => state.products
+      );
+    useEffect(() => {
+    if (id) {
+        dispatch(fetchProductById(id));
     }
+    }, [dispatch, id]);
+    
 
-    return (
-        <main className="min-h-screen bg-[#F5F5F7]">
-            <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-                {/* MAIN PRODUCT DETAILS */}
-                <ProductDetailsCard
-                    product={product}
-                />
-
-                {/* SPECIFICATIONS */}
-                <section className="mt-8 rounded-2xl bg-white p-6">
-                    <h2 className="mb-5 text-xl font-extrabold text-[#1D1D1F]">
-                        Specifications
-                    </h2>
-
-                    <div className="divide-y divide-black/5">
-                        {Object.entries(
-                            product.specifications
-                        ).map(([key, value]) => (
-                            <div
-                                key={key}
-                                className="grid grid-cols-2 gap-4 py-3 text-sm"
-                            >
-                                <span className="font-semibold text-gray-500">
-                                    {key}
-                                </span>
-
-                                <span className="font-semibold text-[#1D1D1F]">
-                                    {value}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-                <RelatedProducts
-                    currentProduct={product}
-                    products={products}
-                />
+    if (loading) {
+        return (
+          <main className="min-h-screen bg-[#F5F5F7]">
+            <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+              <p className="text-sm text-gray-500">
+                Loading product...
+              </p>
             </div>
+          </main>
+        );
+      }
+      if (error) {
+        return (
+          <main className="min-h-screen bg-[#F5F5F7]">
+            <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+              <div className="rounded-2xl bg-white p-8 text-center">
+                <h2 className="text-lg font-extrabold">
+                  Failed to load product
+                </h2>
+    
+                <p className="mt-2 text-sm text-red-500">
+                  {error}
+                </p>
+              </div>
+            </div>
+          </main>
+        );
+      }
+      if (!selectedProduct) {
+        return (
+          <main className="min-h-screen bg-[#F5F5F7]">
+            <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+              <div className="rounded-2xl bg-white p-8 text-center">
+                Product not found.
+              </div>
+            </div>
+          </main>
+        );
+      }
+    
+
+      return (
+        <main className="min-h-screen bg-[#F5F5F7]">
+          <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+            <ProductDetailsCard
+              product={selectedProduct}
+            />
+    
+            <RelatedProducts
+              currentProduct={selectedProduct}
+              products={products}
+            />
+          </div>
         </main>
-    );
-}
+      );
+    }
 
 export default ProductDetailsPage;

@@ -167,3 +167,20 @@ export async function searchProducts(
       limit: data.limit,
     };
   }
+  export async function getProductById(
+    id: string
+  ): Promise<Product> {
+    const response = await fetch(
+      `${BASE_URL}/products/${id}`
+    );
+  
+    if (!response.ok) {
+      throw new Error(
+        "Failed to fetch product details."
+      );
+    }
+  
+    const data: DummyProduct = await response.json();
+  
+    return mapProduct(data);
+  }

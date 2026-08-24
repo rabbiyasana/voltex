@@ -55,41 +55,22 @@ function HomePage({
     // STEP 1:
     // Filter products based on search, category and price
     const filteredProducts = products.filter((product) => {
-        const value = debouncedSearchTerm.trim().toLowerCase();
-
-        const searchableText = `
-          ${product.name}
-          ${product.brand}
-          ${product.category}
-          ${product.shortDescription}
-        `.toLowerCase();
-
-        const matchesSearch =
-            value === "" || searchableText.includes(value);
-
-        const matchesCategory =
-            selectedCategory === "All" ||
-            product.category.toLowerCase() ===
-            selectedCategory.toLowerCase();
-
         const matchesPrice =
-            product.price >= minPrice &&
-            product.price <= maxPrice;
-
+          product.price >= minPrice &&
+          product.price <= maxPrice;
+      
         const matchesRating =
-            product.rating >= minRating;
-
+          product.rating >= minRating;
+      
         const matchesStock =
-            !inStockOnly || product.inStock;
-
+          !inStockOnly || product.inStock;
+      
         return (
-            matchesSearch &&
-            matchesCategory &&
-            matchesPrice &&
-            matchesRating &&
-            matchesStock
+          matchesPrice &&
+          matchesRating &&
+          matchesStock
         );
-    });
+      });
 
     // STEP 2:
     // Sort only the products that passed the filters
@@ -133,7 +114,7 @@ function HomePage({
           (page - 1) * productsPerPage;
       
         const query =
-          debouncedSearchTerm.trim();
+          debouncedSearchTerm.trim().toLowerCase();
       
         if (query) {
           dispatch(

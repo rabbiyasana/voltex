@@ -3,27 +3,29 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 
-import { getProducts, getProductCategories, getProductsByCategory,searchProducts } from "../api/productApi";
+import { getProducts, getProductCategories, getProductsByCategory,searchProducts,getProductById, } from "../api/productApi";
 import type { Product } from "../types/productType";
 
 interface ProductsState {
-    items: Product[];
-    categories: string[];
-    total: number;
-    limit: number;
-    skip: number;
-    loading: boolean;
-    error: string | null;
+  items: Product[];
+  selectedProduct: Product | null;
+  categories: string[];
+  total: number;
+  limit: number;
+  skip: number;
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: ProductsState = {
-    items: [],
-    categories: [],
-    total: 0,
-    limit: 12,
-    skip: 0,
-    loading: false,
-    error: null,
+  items: [],
+  selectedProduct: null,
+  categories: [],
+  total: 0,
+  limit: 12,
+  skip: 0,
+  loading: false,
+  error: null,
 };
 
 export const fetchProducts =
@@ -81,6 +83,13 @@ createAsyncThunk(
     );
     }
 );
+export const fetchProductById =
+  createAsyncThunk(
+    "products/fetchProductById",
+    async (id: string) => {
+      return await getProductById(id);
+    }
+  );
 const productsSlice = createSlice({
     name: "products",
     initialState,
@@ -186,6 +195,33 @@ const productsSlice = createSlice({
                   state.error =
                     action.error.message ??
                     "Failed to search products.";
+                }
+              )
+              .addCase(
+                fetchProductById.pending,
+                (state) => {
+                  state.loading = true;
+                  state.error = null;
+                  state.selectedProduct = null;
+                }
+              )
+              
+              .addCase(
+                fetchProductById.fulfilled,
+                (state, action) => {
+                  state.loading = false;
+                  state.selectedProduct = action.payload;
+                }
+              )
+              
+              .addCase(
+                fetchProductById.rejected,
+                (state, action) => {
+                  state.loading = false;
+                  state.selectedProduct = null;
+                  state.error =
+                    action.error.message ??
+                    "Failed to load product details.";
                 }
               );
     },
