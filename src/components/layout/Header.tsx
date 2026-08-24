@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import type { RootState } from "../../app/store";
+import { useDispatch,  useSelector, } from "react-redux";
+import type { AppDispatch, RootState, } from "../../app/store";
+import { logout } from "../../slices/authSlice";
 import { Search, ShoppingCart, User, Menu, Zap, } from "lucide-react";
 
 interface HeaderProps {
@@ -32,10 +33,16 @@ function Header({
   );
 
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const desktopCategories = categories.slice(0, 6);
   const handleCategoryClick = (category: string) => {
     onCategoryChange?.(category);
     navigate("/products");
+  };
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+    setMobileMenuOpen(false);
   };
   return (
 
@@ -92,6 +99,7 @@ function Header({
             </button>
             {/* user login */}
             {isAuthenticated && user ? (
+             <>
               <button
                 type="button"
                 onClick={() => navigate("/account")}
@@ -111,6 +119,14 @@ function Header({
                   {user.firstName}
                 </span>
               </button>
+              <button
+              type="button"
+              onClick={handleLogout}
+              className="rounded-xl px-3 py-2 text-sm font-semibold text-red-500 hover:bg-red-50"
+            >
+              Logout
+            </button>
+             </>
             ) : (
               <button
                 type="button"
