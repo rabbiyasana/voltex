@@ -1,14 +1,14 @@
 import type { Product } from "../types/productType";
-
-const BASE_URL =import.meta.env.VITE_API_BASE_URL;
+import apiClient from "./apiClient";
 
 interface DummyReview {
-    rating: number;
-    comment: string;
-    date: string;
-    reviewerName: string;
-    reviewerEmail: string;
-  }
+  rating: number;
+  comment: string;
+  date: string;
+  reviewerName: string;
+  reviewerEmail: string;
+}
+
 interface DummyProduct {
   id: number;
   title: string;
@@ -29,7 +29,6 @@ interface DummyProduct {
   sku?: string;
 }
 
-
 interface ProductsResponse {
   products: DummyProduct[];
   total: number;
@@ -38,14 +37,15 @@ interface ProductsResponse {
 }
 
 function mapProduct(product: DummyProduct): Product {
-    const originalPrice =product.discountPercentage > 0
-    ? Number(
-        (
-          product.price /
-          (1 - product.discountPercentage / 100)
-        ).toFixed(2)
-      )
-    : undefined;
+  const originalPrice =
+    product.discountPercentage > 0
+      ? Number(
+          (
+            product.price /
+            (1 - product.discountPercentage / 100)
+          ).toFixed(2)
+        )
+      : undefined;
 
   return {
     id: String(product.id),
@@ -55,7 +55,7 @@ function mapProduct(product: DummyProduct): Product {
     price: product.price,
     originalPrice,
     rating: product.rating,
-    reviewCount:product.reviews.length,
+    reviewCount: product.reviews.length,
     image: product.thumbnail,
     images: product.images,
     inStock: product.stock > 0,
@@ -82,105 +82,104 @@ function mapProduct(product: DummyProduct): Product {
   };
 }
 
-export async function getProducts(limit = 12,skip = 0) {
-  const response = await fetch(
-    `${BASE_URL}/products?limit=${limit}&skip=${skip}`
-  );
-
-  if (!response.ok) {
-    throw new Error(
-      "Failed to fetch products."
+export async function getProducts(
+  limit = 12,
+  skip = 0
+) {
+  const response =
+    await apiClient.get<ProductsResponse>(
+      "/products",
+      {
+        params: {
+          limit,
+          skip,
+        },
+      }
     );
-  }
 
-  const data: ProductsResponse =
-    await response.json();
+  const data = response.data;
 
   return {
-    products:
-      data.products.map(mapProduct),
+    products: data.products.map(mapProduct),
     total: data.total,
     skip: data.skip,
     limit: data.limit,
   };
 }
 
-export async function getProductCategories(): Promise<string[]> {
-    const response = await fetch(
-      `${BASE_URL}/products/category-list`
+export async function getProductCategories(): Promise<
+  string[]
+> {
+  const response =
+    await apiClient.get<string[]>(
+      "/products/category-list"
     );
-  
-    if (!response.ok) {
-      throw new Error(
-        "Failed to fetch product categories."
-      );
-    }
-  
-    return await response.json();
-  }
 
-export async function getProductsByCategory(
-category: string,
-limit = 12,
-skip = 0
-) {
-const response = await fetch(
-    `${BASE_URL}/products/category/${category}?limit=${limit}&skip=${skip}`
-);
-
-if (!response.ok) {
-    throw new Error(
-    "Failed to fetch products by category."
-    );
+  return response.data;
 }
 
-const data: ProductsResponse =
-    await response.json();
+export async function getProductsByCategory(
+  category: string,
+  limit = 12,
+  skip = 0
+) {
+  const response =
+    await apiClient.get<ProductsResponse>(
+      `/products/category/${encodeURIComponent(
+        category
+      )}`,
+      {
+        params: {
+          limit,
+          skip,
+        },
+      }
+    );
 
-return {
+  const data = response.data;
+
+  return {
     products: data.products.map(mapProduct),
     total: data.total,
     skip: data.skip,
     limit: data.limit,
-};
+  };
 }
+
 export async function searchProducts(
-    query: string,
-    limit = 12,
-    skip = 0
-  ) {
-    const response = await fetch(
-      `${BASE_URL}/products/search?q=${encodeURIComponent(query)}&limit=${limit}&skip=${skip}`
+  query: string,
+  limit = 12,
+  skip = 0
+) {
+  const response =
+    await apiClient.get<ProductsResponse>(
+      "/products/search",
+      {
+        params: {
+          q: query,
+          limit,
+          skip,
+        },
+      }
     );
-  
-    if (!response.ok) {
-      throw new Error("Failed to search products.");
-    }
-  
-    const data: ProductsResponse =
-      await response.json();
-  
-    return {
-      products: data.products.map(mapProduct),
-      total: data.total,
-      skip: data.skip,
-      limit: data.limit,
-    };
-  }
-  export async function getProductById(
-    id: string
-  ): Promise<Product> {
-    const response = await fetch(
-      `${BASE_URL}/products/${id}`
+
+  const data = response.data;
+
+  return {
+    products: data.products.map(mapProduct),
+    total: data.total,
+    skip: data.skip,
+    limit: data.limit,
+  };
+}
+
+export async function getProductById(
+  id: string
+): Promise<Product> {
+  const response =
+    await apiClient.get<DummyProduct>(
+      `/products/${id}`
     );
-  
-    if (!response.ok) {
-      throw new Error(
-        "Failed to fetch product details."
-      );
-    }
-  
-    const data: DummyProduct = await response.json();
-  
-    return mapProduct(data);
-  }
+
+  return mapProduct(response.data);
+}
