@@ -5,7 +5,7 @@ interface AccountHeaderProps {
   lastName: string;
   image?: string;
 }
-function AccountHeader({firstName,lastName,image,}: AccountHeaderProps) {
+function AccountHeader({firstName,lastName,}: AccountHeaderProps) {
   return (
     <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
       {/* {image ? (
