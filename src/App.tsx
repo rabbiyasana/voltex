@@ -11,6 +11,7 @@ import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import RegisterPage from "./pages/RegisterPage";
+import AccountPage from "./pages/AccountPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
@@ -87,6 +88,10 @@ function App() {
         <Route
           path="/register"
           element={<RegisterPage />}
+        />
+        <Route
+          path="/account"
+          element={<AccountPage />}
         />
       </Routes>
     </div>

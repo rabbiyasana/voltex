@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch,  useSelector, } from "react-redux";
+import { useDispatch, useSelector, } from "react-redux";
 import type { AppDispatch, RootState, } from "../../app/store";
 import { logout } from "../../slices/authSlice";
 import { Search, ShoppingCart, User, Menu, Zap, } from "lucide-react";
@@ -27,14 +27,12 @@ function Header({
     (state: RootState) => state.cart.items
   );
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
-  const cartCount = cartItems.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const desktopCategories = categories.slice(0, 6);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const handleCategoryClick = (category: string) => {
     onCategoryChange?.(category);
     navigate("/products");
@@ -99,34 +97,79 @@ function Header({
             </button>
             {/* user login */}
             {isAuthenticated && user ? (
-             <>
-              <button
-                type="button"
-                onClick={() => navigate("/account")}
-                className="desktop-user flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[#1D1D1F] transition-colors hover:bg-[#E8E8ED]"
-              >
-                {user.image ? (
-                  <img
-                    src={user.image}
-                    alt={user.firstName}
-                    className="h-7 w-7 rounded-full object-cover"
-                  />
-                ) : (
-                  <User size={17} />
-                )}
+              <div className="desktop-user relative">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setAccountMenuOpen(
+                      (current) => !current
+                    )
+                  }
+                  className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[#1D1D1F] transition-colors hover:bg-[#E8E8ED]"
+                >
+                  {/* {user.image ? (
+                    <img
+                      src={user.image}
+                      alt={user.firstName}
+                      className="h-7 w-7 rounded-full object-cover"
+                    />
+                  ) : (
+                    <User size={17} />
+                  )} */}
 
-                <span>
-                  {user.firstName}
-                </span>
-              </button>
-              <button
-              type="button"
-              onClick={handleLogout}
-              className="rounded-xl px-3 py-2 text-sm font-semibold text-red-500 hover:bg-red-50"
-            >
-              Logout
-            </button>
-             </>
+                  <span>{user.firstName}</span>
+                </button>
+
+                {accountMenuOpen && (
+                  <div className="absolute right-0 top-12 w-52 rounded-2xl border border-black/10 bg-white p-2 shadow-lg">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigate("/account");
+                        setAccountMenuOpen(false);
+                      }}
+                      className="w-full rounded-xl px-3 py-2 text-left text-sm font-semibold hover:bg-[#F5F5F7]"
+                    >
+                      My Account
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigate("/account/orders");
+                        setAccountMenuOpen(false);
+                      }}
+                      className="w-full rounded-xl px-3 py-2 text-left text-sm font-semibold hover:bg-[#F5F5F7]"
+                    >
+                      My Orders
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigate("/wishlist");
+                        setAccountMenuOpen(false);
+                      }}
+                      className="w-full rounded-xl px-3 py-2 text-left text-sm font-semibold hover:bg-[#F5F5F7]"
+                    >
+                      Wishlist
+                    </button>
+
+                    <div className="my-1 border-t border-black/10" />
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleLogout();
+                        setAccountMenuOpen(false);
+                      }}
+                      className="w-full rounded-xl px-3 py-2 text-left text-sm font-semibold text-red-500 hover:bg-red-50"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
               <button
                 type="button"
