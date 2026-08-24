@@ -3,29 +3,35 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 
-import { getProducts, getProductCategories, getProductsByCategory,searchProducts,getProductById, } from "../api/productApi";
+import { getProducts, getProductCategories, getProductsByCategory, searchProducts, getProductById, } from "../api/productApi";
 import type { Product } from "../types/productType";
 
 interface ProductsState {
-  items: Product[];
-  selectedProduct: Product | null;
-  categories: string[];
-  total: number;
-  limit: number;
-  skip: number;
-  loading: boolean;
-  error: string | null;
+    items: Product[];
+    selectedProduct: Product | null;
+    relatedItems: Product[];
+    categories: string[];
+    total: number;
+    limit: number;
+    skip: number;
+    loading: boolean;
+    productDetailsLoading: boolean;
+    relatedLoading: boolean;
+    error: string | null;
 }
 
 const initialState: ProductsState = {
-  items: [],
-  selectedProduct: null,
-  categories: [],
-  total: 0,
-  limit: 12,
-  skip: 0,
-  loading: false,
-  error: null,
+    items: [],
+    selectedProduct: null,
+    relatedItems: [],
+    categories: [],
+    total: 0,
+    limit: 12,
+    skip: 0,
+    loading: false,
+    productDetailsLoading: false,
+    relatedLoading: false,
+    error: null,
 };
 
 export const fetchProducts =
@@ -65,31 +71,55 @@ export const fetchProductsByCategory =
         }
     );
 export const fetchSearchProducts =
+    createAsyncThunk(
+        "products/fetchSearchProducts",
+        async ({
+            query,
+            limit,
+            skip,
+        }: {
+            query: string;
+            limit: number;
+            skip: number;
+        }) => {
+            return await searchProducts(
+                query,
+                limit,
+                skip
+            );
+        }
+    );
+export const fetchProductById =
+    createAsyncThunk(
+        "products/fetchProductById",
+        async (id: string) => {
+            return await getProductById(id);
+        }
+    );
+export const fetchRelatedProducts =
 createAsyncThunk(
-    "products/fetchSearchProducts",
+    "products/fetchRelatedProducts",
     async ({
-    query,
-    limit,
-    skip,
+    category,
+    currentProductId,
+    limit = 5,
     }: {
-    query: string;
-    limit: number;
-    skip: number;
+    category: string;
+    currentProductId: string;
+    limit?: number;
     }) => {
-    return await searchProducts(
-        query,
+    const data = await getProductsByCategory(
+        category,
         limit,
-        skip
+        0
+    );
+
+    return data.products.filter(
+        (product) =>
+        product.id !== currentProductId
     );
     }
 );
-export const fetchProductById =
-  createAsyncThunk(
-    "products/fetchProductById",
-    async (id: string) => {
-      return await getProductById(id);
-    }
-  );
 const productsSlice = createSlice({
     name: "products",
     initialState,
@@ -144,84 +174,107 @@ const productsSlice = createSlice({
             .addCase(
                 fetchProductsByCategory.pending,
                 (state) => {
-                  state.loading = true;
-                  state.error = null;
+                    state.loading = true;
+                    state.error = null;
                 }
-              )
-              
-              .addCase(
+            )
+
+            .addCase(
                 fetchProductsByCategory.fulfilled,
                 (state, action) => {
-                  state.loading = false;
-                  state.items = action.payload.products;
-                  state.total = action.payload.total;
-                  state.limit = action.payload.limit;
-                  state.skip = action.payload.skip;
+                    state.loading = false;
+                    state.items = action.payload.products;
+                    state.total = action.payload.total;
+                    state.limit = action.payload.limit;
+                    state.skip = action.payload.skip;
                 }
-              )
-              
-              .addCase(
+            )
+
+            .addCase(
                 fetchProductsByCategory.rejected,
                 (state, action) => {
-                  state.loading = false;
-                  state.error =
-                    action.error.message ??
-                    "Failed to load products.";
+                    state.loading = false;
+                    state.error =
+                        action.error.message ??
+                        "Failed to load products.";
                 }
-              )
-              .addCase(
+            )
+            .addCase(
                 fetchSearchProducts.pending,
                 (state) => {
-                  state.loading = true;
-                  state.error = null;
+                    state.loading = true;
+                    state.error = null;
                 }
-              )
-              
-              .addCase(
+            )
+
+            .addCase(
                 fetchSearchProducts.fulfilled,
                 (state, action) => {
-                  state.loading = false;
-                  state.items = action.payload.products;
-                  state.total = action.payload.total;
-                  state.limit = action.payload.limit;
-                  state.skip = action.payload.skip;
+                    state.loading = false;
+                    state.items = action.payload.products;
+                    state.total = action.payload.total;
+                    state.limit = action.payload.limit;
+                    state.skip = action.payload.skip;
                 }
-              )
-              
-              .addCase(
+            )
+
+            .addCase(
                 fetchSearchProducts.rejected,
                 (state, action) => {
-                  state.loading = false;
-                  state.error =
-                    action.error.message ??
-                    "Failed to search products.";
+                    state.loading = false;
+                    state.error =
+                        action.error.message ??
+                        "Failed to search products.";
                 }
-              )
-              .addCase(
+            )
+            .addCase(
                 fetchProductById.pending,
                 (state) => {
-                  state.loading = true;
-                  state.error = null;
-                  state.selectedProduct = null;
+                    state.productDetailsLoading = true;
+                    state.error = null;
+                    state.selectedProduct = null;
                 }
-              )
-              
-              .addCase(
+            )
+
+            .addCase(
                 fetchProductById.fulfilled,
                 (state, action) => {
-                  state.loading = false;
-                  state.selectedProduct = action.payload;
+                    state.productDetailsLoading = false;
+                    state.selectedProduct = action.payload;
                 }
-              )
-              
-              .addCase(
+            )
+
+            .addCase(
                 fetchProductById.rejected,
                 (state, action) => {
-                  state.loading = false;
+                  state.productDetailsLoading = false;
                   state.selectedProduct = null;
+              
                   state.error =
                     action.error.message ??
                     "Failed to load product details.";
+                }
+              )
+              .addCase(
+                fetchRelatedProducts.pending,
+                (state) => {
+                  state.relatedLoading = true;
+                }
+              )
+              
+              .addCase(
+                fetchRelatedProducts.fulfilled,
+                (state, action) => {
+                  state.relatedLoading = false;
+                  state.relatedItems = action.payload;
+                }
+              )
+              
+              .addCase(
+                fetchRelatedProducts.rejected,
+                (state) => {
+                  state.relatedLoading = false;
+                  state.relatedItems = [];
                 }
               );
     },

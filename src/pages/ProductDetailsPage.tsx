@@ -13,9 +13,8 @@ function ProductDetailsPage() {
     const dispatch = useDispatch<AppDispatch>();
     const {
         selectedProduct,
-        loading,
+        productDetailsLoading,
         error,
-        items: products,
       } = useSelector(
         (state: RootState) => state.products
       );
@@ -26,7 +25,7 @@ function ProductDetailsPage() {
     }, [dispatch, id]);
     
 
-    if (loading) {
+    if (productDetailsLoading) {
         return (
           <main className="min-h-screen bg-[#F5F5F7]">
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
@@ -76,7 +75,6 @@ function ProductDetailsPage() {
     
             <RelatedProducts
               currentProduct={selectedProduct}
-              products={products}
             />
           </div>
         </main>
