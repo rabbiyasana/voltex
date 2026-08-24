@@ -12,6 +12,7 @@ import LoginPage from "./pages/LoginPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import RegisterPage from "./pages/RegisterPage";
 import AccountPage from "./pages/AccountPage";
+import OrdersPage from "./pages/OrdersPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
@@ -92,6 +93,10 @@ function App() {
         <Route
           path="/account"
           element={<AccountPage />}
+        />
+        <Route
+          path="/account/orders"
+          element={<OrdersPage />}
         />
       </Routes>
     </div>

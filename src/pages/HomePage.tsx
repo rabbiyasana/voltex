@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../app/store";
-import { fetchProducts,fetchSearchProducts, fetchProductsByCategory, } from "../slices/productSlice";
+import { fetchProducts, fetchSearchProducts, fetchProductsByCategory, } from "../slices/productSlice";
 
 import { Check, ChevronLeft, ChevronRight, ChevronDown, Search, SlidersHorizontal, } from "lucide-react";
 
@@ -35,7 +35,7 @@ function HomePage({
     const [minRating, setMinRating] = useState(0);
     const [inStockOnly, setInStockOnly] = useState(false);
     const [showMobileFilters, setShowMobileFilters] = useState(false);
-    const [debouncedSearchTerm, setDebouncedSearchTerm] =useState(searchTerm);
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
     const [page, setPage] = useState(1);
     const productsPerPage = 12;
@@ -56,21 +56,21 @@ function HomePage({
     // Filter products based on search, category and price
     const filteredProducts = products.filter((product) => {
         const matchesPrice =
-          product.price >= minPrice &&
-          product.price <= maxPrice;
-      
+            product.price >= minPrice &&
+            product.price <= maxPrice;
+
         const matchesRating =
-          product.rating >= minRating;
-      
+            product.rating >= minRating;
+
         const matchesStock =
-          !inStockOnly || product.inStock;
-      
+            !inStockOnly || product.inStock;
+
         return (
-          matchesPrice &&
-          matchesRating &&
-          matchesStock
+            matchesPrice &&
+            matchesRating &&
+            matchesStock
         );
-      });
+    });
 
     // STEP 2:
     // Sort only the products that passed the filters
@@ -92,66 +92,66 @@ function HomePage({
             }
         }
     );
-    const totalPages =Math.ceil(total / productsPerPage);
+    const totalPages = Math.ceil(total / productsPerPage);
     const handleCategoryChange = (
         category: string
-      ) => {
+    ) => {
         setPage(1);
         onCategoryChange(category);
-      };
-      useEffect(() => {
+    };
+    useEffect(() => {
         const timeout = setTimeout(() => {
-          setDebouncedSearchTerm(searchTerm);
-          setPage(1);
+            setDebouncedSearchTerm(searchTerm);
+            setPage(1);
         }, 500);
-      
+
         return () => {
-          clearTimeout(timeout);
+            clearTimeout(timeout);
         };
-      }, [searchTerm]);
-      useEffect(() => {
+    }, [searchTerm]);
+    useEffect(() => {
         const skip =
-          (page - 1) * productsPerPage;
-      
+            (page - 1) * productsPerPage;
+
         const query =
-          debouncedSearchTerm.trim().toLowerCase();
-      
+            debouncedSearchTerm.trim().toLowerCase();
+
         if (query) {
-          dispatch(
-            fetchSearchProducts({
-              query,
-              limit: productsPerPage,
-              skip,
-            })
-          );
-      
-          return;
+            dispatch(
+                fetchSearchProducts({
+                    query,
+                    limit: productsPerPage,
+                    skip,
+                })
+            );
+
+            return;
         }
-      
+
         if (selectedCategory !== "All") {
-          dispatch(
-            fetchProductsByCategory({
-              category: selectedCategory,
-              limit: productsPerPage,
-              skip,
-            })
-          );
-      
-          return;
+            dispatch(
+                fetchProductsByCategory({
+                    category: selectedCategory,
+                    limit: productsPerPage,
+                    skip,
+                })
+            );
+
+            return;
         }
-      
+
         dispatch(
-          fetchProducts({
-            limit: productsPerPage,
-            skip,
-          })
+            fetchProducts({
+                limit: productsPerPage,
+                skip,
+            })
         );
-      }, [
+    }, [
         dispatch,
         page,
         selectedCategory,
         debouncedSearchTerm,
-      ]);
+    ]);
     return (
         <main className="min-h-screen bg-[#F5F5F7]">
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -369,7 +369,7 @@ function HomePage({
                         ) : (
                             // PRODUCTS
                             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
-                               {sortedProducts.map((product) => (
+                                {sortedProducts.map((product) => (
                                     <ProductCard
                                         key={product.id}
                                         product={product}
