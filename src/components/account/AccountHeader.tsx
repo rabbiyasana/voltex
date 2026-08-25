@@ -1,14 +1,13 @@
-import { User } from "lucide-react";
 
 interface AccountHeaderProps {
-  firstName: string;
-  lastName: string;
-  image?: string;
+    firstName: string;
+    lastName: string;
+    image?: string;
 }
-function AccountHeader({firstName,lastName,}: AccountHeaderProps) {
-  return (
-    <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-      {/* {image ? (
+function AccountHeader({ firstName, lastName, }: AccountHeaderProps) {
+    return (
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+            {/* {image ? (
         <img
           src={image}
           alt={firstName}
@@ -23,17 +22,17 @@ function AccountHeader({firstName,lastName,}: AccountHeaderProps) {
         </div>
       )} */}
 
-      <div>
-        <h1 className="text-2xl font-extrabold text-[#1D1D1F]">
-          {firstName} {lastName}
-        </h1>
+            <div>
+                <h1 className="text-2xl font-extrabold text-[#1D1D1F]">
+                    {firstName} {lastName}
+                </h1>
 
-        <p className="mt-1 text-sm text-gray-500">
-          Manage your account information.
-        </p>
-      </div>
-    </div>
-  );
+                <p className="mt-1 text-sm text-gray-500">
+                    Manage your account information.
+                </p>
+            </div>
+        </div>
+    );
 }
 
 export default AccountHeader;

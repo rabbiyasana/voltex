@@ -136,12 +136,12 @@ function ProductCard({ product }: ProductCardProps) {
         {/* PRICE */}
         <div className="mt-auto flex items-center gap-2 pt-1">
           <span className="text-base font-extrabold text-[#1D1D1F]">
-          ${product.price.toFixed(2)}
+            ${product.price.toFixed(2)}
           </span>
 
-          {isOnSale && (
+          {isOnSale && product.originalPrice !== undefined && (
             <span className="text-xs text-gray-400 line-through">
-               ${product.originalPrice.toFixed(2)}
+              ${product.originalPrice.toFixed(2)}
             </span>
           )}
         </div>
@@ -160,8 +160,8 @@ function ProductCard({ product }: ProductCardProps) {
             );
           }}
           className={`flex w-full items-center justify-center gap-1.5 rounded-xl py-2.5 text-sm font-bold transition-all ${product.inStock
-              ? "bg-[#0057FF] text-white hover:bg-[#0046CC] active:scale-[0.98]"
-              : "cursor-not-allowed bg-[#E8E8ED] text-gray-400"
+            ? "bg-[#0057FF] text-white hover:bg-[#0046CC] active:scale-[0.98]"
+            : "cursor-not-allowed bg-[#E8E8ED] text-gray-400"
             }`}
         >
           {product.inStock ? (

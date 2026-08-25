@@ -25,9 +25,7 @@ function App() {
   const categoriesFromApi = useSelector(
     (state: RootState) => state.products.categories
   );
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
-  };
+
   useEffect(() => {
     dispatch(fetchProductCategories());
   }, [dispatch]);

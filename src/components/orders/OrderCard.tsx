@@ -1,6 +1,5 @@
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import type { Order } from "../../types/orderType";
 
 
 interface OrderCardProps {
