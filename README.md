@@ -1,77 +1,332 @@
-# React + TypeScript + Vite
+# Voltex
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Voltex is a responsive e-commerce frontend application built with React, TypeScript, Redux Toolkit, React Router, Tailwind CSS, Axios, and Vite.
 
-Currently, two official plugins are available:
+It demonstrates a complete shopping flow including product discovery, product details, cart management, multi-step checkout, authentication, account management, order history, and order details.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Live Demo
 
-## React Compiler
+https://voltex-neon.vercel.app
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## GitHub Repository
 
-Note: This will impact Vite dev & build performances.
+https://github.com/rabbiyasana/voltex
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Product listing with API-powered data
+- Product search
+- Category filtering
+- Product detail pages
+- Related products
+- Shopping cart
+- Cart quantity management
+- Cart persistence with `localStorage`
+- Multi-step checkout
+  - Contact information
+  - Shipping address
+  - Delivery method
+  - Payment step
+  - Order confirmation
+- Login
+- Registration
+- Auth state management with Redux Toolkit
+- Account/Profile page
+- My Orders
+- Order Details
+- Contact and shipping information stored with completed orders
+- Order persistence with `localStorage`
+- Responsive desktop and mobile UI
+- React Router SPA navigation
+- Vercel deployment configuration
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Frontend
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- React
+- TypeScript
+- Redux Toolkit
+- React Redux
+- React Router
+- Tailwind CSS
+- Lucide React
+- Axios
 
+### Tooling
+
+- Vite
+- TypeScript Compiler
+- ESLint
+- Git
+- GitHub
+- Vercel
+
+### API
+
+- DummyJSON
+
+## Architecture
+
+The project uses a type-based application structure, with UI components grouped further by domain.
+
+```text
+src/
+├── api/
+│   ├── apiClient.ts
+│   ├── authApi.ts
+│   └── productApi.ts
+│
+├── app/
+│   └── store.ts
+│
+├── components/
+│   ├── account/
+│   ├── auth/
+│   ├── cart/
+│   ├── checkout/
+│   ├── common/
+│   ├── layout/
+│   ├── orders/
+│   └── product/
+│
+├── hooks/
+│
+├── pages/
+│
+├── slices/
+│   ├── authSlice.ts
+│   ├── cartSlice.ts
+│   ├── orderSlice.ts
+│   └── productSlice.ts
+│
+├── types/
+│   ├── orderType.ts
+│   └── productType.ts
+│
+├── utils/
+│
+├── App.tsx
+├── main.tsx
+└── index.css
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## State Management
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Redux Toolkit is used for application-level state such as:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
+- Products
+- Authentication
+- Cart
+- Orders
+
+Component-local state is used for UI-specific behavior and form state where global state is not required.
+
+## API Layer
+
+Axios is configured through a shared API client.
+
+```ts
+const apiClient = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
   },
-])
-
+});
 ```
+
+Product API responses are mapped into the application's own `Product` model before being used by UI components.
+
+This keeps external API response shapes separate from application-specific types.
+
+## Data Flow Example
+
+A typical product request follows this flow:
+
+```text
+Page
+→ Redux async thunk
+→ API service
+→ Axios
+→ DummyJSON
+→ response mapper
+→ Redux state
+→ UI
+```
+
+The checkout/order flow follows:
+
+```text
+Product Listing
+→ Product Details
+→ Cart
+→ Checkout
+→ Contact
+→ Shipping
+→ Payment
+→ Order Confirmation
+→ My Orders
+→ Order Details
+```
+
+## Local Persistence
+
+`localStorage` is used for demo persistence of:
+
+- Cart
+- Authentication state
+- Completed orders
+
+This allows important application state to survive page refreshes.
+
+For a production application, authentication tokens would preferably be handled using a more secure server-controlled approach such as HttpOnly cookies when supported by the backend.
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/rabbiyasana/voltex.git
+cd voltex
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Create an environment file
+
+Create a `.env` file in the project root:
+
+```env
+VITE_API_BASE_URL=https://dummyjson.com
+```
+
+You can also create `.env.local` for local development.
+
+### 4. Start the development server
+
+```bash
+npm run dev
+```
+
+### 5. Build for production
+
+```bash
+npm run build
+```
+
+### 6. Preview the production build
+
+```bash
+npm run preview
+```
+
+## Environment Variables
+
+| Variable | Description |
+| --- | --- |
+| `VITE_API_BASE_URL` | Base URL used by the Axios API client |
+
+Example:
+
+```env
+VITE_API_BASE_URL=https://dummyjson.com
+```
+
+> Variables prefixed with `VITE_` are included in the frontend bundle and should not contain secrets.
+
+## Routing
+
+The app uses React Router.
+
+Important routes include:
+
+```text
+/
+/products
+/products/:id
+/cart
+/checkout
+/login
+/register
+/account
+/account/orders
+/account/orders/:id
+```
+
+For Vercel deployment, SPA rewrites are configured so refreshing a nested React Router URL still serves `index.html`.
+
+Example `vercel.json`:
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
+
+## Authentication
+
+Authentication is demonstrated using DummyJSON.
+
+The application stores authenticated user information and tokens in Redux and persists demo auth state locally.
+
+### DummyJSON limitation
+
+DummyJSON authentication and user creation are useful for frontend demonstrations, but some mutation endpoints simulate changes rather than persisting them like a real production backend.
+
+For example, registration should be treated as a simulated frontend/API integration rather than a persistent production user-registration system.
+
+## Orders
+
+Completed checkout orders are stored in Redux and persisted locally.
+
+Each order contains:
+
+- Order ID
+- Date
+- Status
+- Products and quantities
+- Contact information
+- Shipping address
+- Subtotal
+- Shipping cost
+- Total
+
+This allows the app to demonstrate a complete checkout-to-order-history experience without requiring a custom backend.
+
+## Design
+
+The UI uses a clean ecommerce design system with:
+
+- Responsive layouts
+- Reusable domain components
+- Consistent cards and spacing
+- Loading/error states
+- Product and checkout-focused UX
+- Mobile-friendly navigation
+
+## Future Improvements
+
+Possible next improvements include:
+
+- Wishlist
+- Saved addresses
+- Forgot-password flow
+- Backend-backed persistent orders
+- Backend-backed registration
+- Secure cookie-based authentication
+- Automated testing
+- Improved global toast notifications
+- Additional accessibility improvements
+
+## License
+
+This project was created as a portfolio and interview demonstration project.
