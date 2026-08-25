@@ -329,4 +329,4 @@ Possible next improvements include:
 
 ## License
 
-This project was created as a portfolio and interview demonstration project.
+This project was created as a portfolio project.
