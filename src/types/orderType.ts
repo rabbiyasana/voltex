@@ -5,6 +5,22 @@ export interface OrderItem {
   quantity: number;
 }
 
+export interface OrderContact {
+  email: string;
+  phone: string;
+}
+
+export interface ShippingAddress {
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  apartment:string;
+  country: string;
+}
+
 export interface Order {
   id: string;
   date: string;
@@ -12,6 +28,8 @@ export interface Order {
 
   items: OrderItem[];
 
+  contact: OrderContact;
+  shippingAddress: ShippingAddress;
   subtotal: number;
   shipping: number;
   total: number;

@@ -1,14 +1,11 @@
 import { useSelector } from "react-redux";
-import {
-    useNavigate,
-    useParams,
-} from "react-router-dom";
-
+import { useNavigate, useParams, } from "react-router-dom";
 import type { RootState } from "../app/store";
-
-import OrderDetailsHeader from "../components/orders/OrderDetailsHeader";
 import OrderItems from "../components/orders/OrderItems";
+import OrderDetailsHeader from "../components/orders/OrderDetailsHeader";
 import OrderDetailsSummary from "../components/orders/OrderDetailsSummary";
+import OrderContactDetails from "../components/orders/OrderContactDetails";
+import OrderShippingAddress from "../components/orders/OrderShippingAddress";
 
 function OrderDetailsPage() {
     const { id } = useParams();
@@ -75,6 +72,23 @@ function OrderDetailsPage() {
                         subtotal={order.subtotal}
                         shipping={order.shipping}
                         total={order.total}
+                    />
+                </div>
+                <div className="grid gap-5 md:grid-cols-2">
+                    <OrderContactDetails
+                        email={order.contact.email}
+                        phone={order.contact.phone}
+                    />
+
+                    <OrderShippingAddress
+                        firstName={order.shippingAddress.firstName}
+                        lastName={order.shippingAddress.lastName}
+                        address={order.shippingAddress.address}
+                        apartment={order.shippingAddress.apartment}
+                        city={order.shippingAddress.city}
+                        state={order.shippingAddress.state}
+                        postalCode={order.shippingAddress.postalCode}
+                        country={order.shippingAddress.country}
                     />
                 </div>
             </div>

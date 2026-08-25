@@ -1,21 +1,31 @@
 import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-interface ShippingStepProps {
-    onBack: () => void;
-    onNext: () => void;
-    onShippingChange: (price: number) => void;
-}
-
-interface ShippingFormState {
+export interface ShippingData {
     address: string;
     apartment: string;
     city: string;
     state: string;
     postalCode: string;
     country: string;
-    deliveryMethod: "standard" | "express" | "overnight";
+    deliveryMethod:
+    | "standard"
+    | "express"
+    | "overnight";
 }
+
+interface ShippingStepProps {
+    onBack: () => void;
+
+    onNext: (
+        data: ShippingData
+    ) => void;
+
+    onShippingChange: (
+        price: number
+    ) => void;
+}
+
 
 function ShippingStep({
     onBack,
@@ -23,14 +33,15 @@ function ShippingStep({
     onShippingChange,
 }: ShippingStepProps) {
     const [form, setForm] =
-        useState<ShippingFormState>({
+        useState<ShippingData>({
             address: "",
             apartment: "",
             city: "",
             state: "",
             postalCode: "",
             country: "",
-            deliveryMethod: "standard",
+            deliveryMethod:
+                "standard",
         });
 
     const [error, setError] = useState("");
@@ -50,20 +61,43 @@ function ShippingStep({
 
     const handleContinue = () => {
         if (
-            !form.address ||
-            !form.city ||
-            !form.state ||
-            !form.postalCode ||
-            !form.country
+            !form.address.trim() ||
+            !form.city.trim() ||
+            !form.state.trim() ||
+            !form.postalCode.trim() ||
+            !form.country.trim()
         ) {
             setError(
                 "Please fill in all required shipping fields."
             );
+
             return;
         }
 
         setError("");
-        onNext();
+
+        onNext({
+            address:
+                form.address.trim(),
+
+            apartment:
+                form.apartment.trim(),
+
+            city:
+                form.city.trim(),
+
+            state:
+                form.state.trim(),
+
+            postalCode:
+                form.postalCode.trim(),
+
+            country:
+                form.country,
+
+            deliveryMethod:
+                form.deliveryMethod,
+        });
     };
     const handleDeliveryChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -73,7 +107,7 @@ function ShippingStep({
         setForm((current) => ({
             ...current,
             deliveryMethod:
-                value as ShippingFormState["deliveryMethod"],
+                value as ShippingData["deliveryMethod"],
         }));
 
         if (value === "standard") {
@@ -309,8 +343,8 @@ function ShippingStep({
 
                         <label
                             className={`flex cursor-pointer items-center justify-between rounded-2xl border p-4 ${form.deliveryMethod === "overnight"
-                                    ? "border-[#0057FF] bg-[#0057FF]/5"
-                                    : "border-black/10"
+                                ? "border-[#0057FF] bg-[#0057FF]/5"
+                                : "border-black/10"
                                 }`}
                         >                            <div className="flex items-center gap-3">
                                 <input

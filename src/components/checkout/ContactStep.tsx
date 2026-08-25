@@ -1,8 +1,18 @@
 import { useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+} from "lucide-react";
+
+export interface ContactData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+}
 
 interface ContactStepProps {
-  onNext: () => void;
+  onNext: (data: ContactData) => void;
 }
 
 interface ContactFormState {
@@ -25,16 +35,22 @@ function ContactStep({
       subscribe: true,
     });
 
-  const [error, setError] = useState("");
+  const [error, setError] =
+    useState("");
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const { name, value, type, checked } =
-      event.target;
+    const {
+      name,
+      value,
+      type,
+      checked,
+    } = event.target;
 
     setForm((current) => ({
       ...current,
+
       [name]:
         type === "checkbox"
           ? checked
@@ -44,19 +60,33 @@ function ContactStep({
 
   const handleContinue = () => {
     if (
-      !form.firstName ||
-      !form.lastName ||
-      !form.email ||
-      !form.phone
+      !form.firstName.trim() ||
+      !form.lastName.trim() ||
+      !form.email.trim() ||
+      !form.phone.trim()
     ) {
       setError(
         "Please fill in all required fields."
       );
+
       return;
     }
 
     setError("");
-    onNext();
+
+    onNext({
+      firstName:
+        form.firstName.trim(),
+
+      lastName:
+        form.lastName.trim(),
+
+      email:
+        form.email.trim(),
+
+      phone:
+        form.phone.trim(),
+    });
   };
 
   return (
@@ -67,6 +97,7 @@ function ContactStep({
 
       <div className="mt-6 space-y-5">
         {/* FIRST + LAST NAME */}
+
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label
@@ -81,7 +112,9 @@ function ContactStep({
               name="firstName"
               type="text"
               value={form.firstName}
-              onChange={handleChange}
+              onChange={
+                handleChange
+              }
               placeholder="Alex"
               className="w-full rounded-2xl bg-[#F1F1F5] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#0057FF]/30"
             />
@@ -100,7 +133,9 @@ function ContactStep({
               name="lastName"
               type="text"
               value={form.lastName}
-              onChange={handleChange}
+              onChange={
+                handleChange
+              }
               placeholder="Morgan"
               className="w-full rounded-2xl bg-[#F1F1F5] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#0057FF]/30"
             />
@@ -108,6 +143,7 @@ function ContactStep({
         </div>
 
         {/* EMAIL */}
+
         <div>
           <label
             htmlFor="email"
@@ -128,6 +164,7 @@ function ContactStep({
         </div>
 
         {/* PHONE */}
+
         <div>
           <label
             htmlFor="phone"
@@ -148,17 +185,24 @@ function ContactStep({
         </div>
 
         {/* SUBSCRIBE */}
+
         <label className="flex cursor-pointer items-center gap-3 text-sm text-gray-500">
           <input
             type="checkbox"
             name="subscribe"
-            checked={form.subscribe}
-            onChange={handleChange}
+            checked={
+              form.subscribe
+            }
+            onChange={
+              handleChange
+            }
             className="h-4 w-4 accent-[#0057FF]"
           />
 
           <span>
-            Subscribe for exclusive deals and updates
+            Subscribe for
+            exclusive deals and
+            updates
           </span>
         </label>
       </div>
@@ -170,23 +214,31 @@ function ContactStep({
       )}
 
       {/* FOOTER BUTTONS */}
+
       <div className="mt-6 flex items-center justify-between border-t border-black/10 pt-5">
         <button
           type="button"
           disabled
           className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F1F1F5] px-5 py-2.5 text-sm font-bold text-gray-400"
         >
-          <ArrowLeft size={15} />
+          <ArrowLeft
+            size={15}
+          />
           Back
         </button>
 
         <button
           type="button"
-          onClick={handleContinue}
+          onClick={
+            handleContinue
+          }
           className="flex items-center gap-2 rounded-xl bg-[#0057FF] px-6 py-2.5 text-sm font-extrabold text-white hover:bg-[#0046CC]"
         >
           Continue
-          <ArrowRight size={15} />
+
+          <ArrowRight
+            size={15}
+          />
         </button>
       </div>
     </section>

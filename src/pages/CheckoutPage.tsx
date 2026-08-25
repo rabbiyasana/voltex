@@ -1,16 +1,29 @@
 import { useState } from "react";
-import { useDispatch, useSelector, } from "react-redux";
 
-import type { AppDispatch, RootState, } from "../app/store";
+import {
+    useDispatch,
+    useSelector,
+} from "react-redux";
+
+import type {
+    AppDispatch,
+    RootState,
+} from "../app/store";
 
 import { clearCart } from "../slices/cartSlice";
+
 import { addOrder } from "../slices/orderSlice";
 
 import CheckoutProgress from "../components/checkout/CheckoutProgress";
+
 import ContactStep from "../components/checkout/ContactStep";
+
 import ShippingStep from "../components/checkout/ShippingStep";
+
 import PaymentStep from "../components/checkout/PaymentStep";
+
 import CheckoutSummary from "../components/checkout/CheckoutSummary";
+
 import OrderConfirmation from "../components/checkout/OrderConfirmation";
 
 import type { Product } from "../types/productType";
@@ -20,66 +33,180 @@ interface OrderItem {
     quantity: number;
 }
 
+interface ContactData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+}
+
+interface ShippingData {
+    address: string;
+    apartment: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+
+    deliveryMethod:
+    | "standard"
+    | "express"
+    | "overnight";
+}
+
 function CheckoutPage() {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch =
+        useDispatch<AppDispatch>();
 
     const cartItems = useSelector(
-        (state: RootState) => state.cart.items
+        (state: RootState) =>
+            state.cart.items
     );
 
-    const [step, setStep] = useState(1);
+    const [step, setStep] =
+        useState(1);
 
-    const [completedOrder, setCompletedOrder] =
-        useState<OrderItem[]>([]);
+    const [
+        completedOrder,
+        setCompletedOrder,
+    ] = useState<OrderItem[]>([]);
 
-    const [completedTotal, setCompletedTotal] =
-        useState(0);
+    const [
+        completedTotal,
+        setCompletedTotal,
+    ] = useState(0);
 
-    const [orderNumber, setOrderNumber] =
-        useState("");
+    const [
+        orderNumber,
+        setOrderNumber,
+    ] = useState("");
 
-    const subtotal = cartItems.reduce(
-        (total, item) =>
-            total +
-            item.product.price * item.quantity,
-        0
-    );
+    const [
+        shipping,
+        setShipping,
+    ] = useState(0);
 
-    const [shipping, setShipping] =
-        useState(0);
+    // CONTACT INFORMATION
+    const [
+        contactData,
+        setContactData,
+    ] = useState<ContactData>({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+    });
 
-    const total = subtotal + shipping;
+    // SHIPPING INFORMATION
+    const [
+        shippingData,
+        setShippingData,
+    ] = useState<ShippingData>({
+        address: "",
+        apartment: "",
+        city: "",
+        state: "",
+        postalCode: "",
+        country: "",
+        deliveryMethod:
+            "standard",
+    });
+
+    const subtotal =
+        cartItems.reduce(
+            (total, item) =>
+                total +
+                item.product.price *
+                item.quantity,
+            0
+        );
+
+    const total =
+        subtotal + shipping;
 
     const handlePlaceOrder = () => {
         const newOrderNumber =
             `VTX-${Math.floor(
-                100000 + Math.random() * 900000
+                100000 +
+                Math.random() *
+                900000
             )}`;
 
         const newOrder = {
             id: newOrderNumber,
-            date: new Date().toLocaleDateString(
-                "en-US",
-                {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                }
-            ),
+
+            date: new Date()
+                .toLocaleDateString(
+                    "en-US",
+                    {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    }
+                ),
+
             status: "Processing",
+
             items: cartItems,
+
+            contact: {
+                email:
+                    contactData.email,
+                phone:
+                    contactData.phone,
+            },
+
+            shippingAddress: {
+                firstName:
+                    contactData.firstName,
+
+                lastName:
+                    contactData.lastName,
+
+                address:
+                    shippingData.address,
+
+                city:
+                    shippingData.city,
+
+                state:
+                    shippingData.state,
+
+                postalCode:
+                    shippingData.postalCode,
+
+                country:
+                    shippingData.country,
+                apartment:
+                    shippingData.apartment
+            },
+
             subtotal,
+
             shipping,
+
             total,
         };
 
-        dispatch(addOrder(newOrder));
+        dispatch(
+            addOrder(newOrder)
+        );
 
-        setCompletedOrder(cartItems);
-        setCompletedTotal(total);
-        setOrderNumber(newOrderNumber);
+        setCompletedOrder(
+            cartItems
+        );
 
-        dispatch(clearCart());
+        setCompletedTotal(
+            total
+        );
+
+        setOrderNumber(
+            newOrderNumber
+        );
+
+        dispatch(
+            clearCart()
+        );
 
         setStep(4);
     };
@@ -97,7 +224,8 @@ function CheckoutPage() {
                         </h1>
 
                         <p className="mt-2 text-sm text-gray-500">
-                            Add some products before checking out.
+                            Add some products
+                            before checking out.
                         </p>
                     </div>
                 </div>
@@ -108,11 +236,12 @@ function CheckoutPage() {
     return (
         <main className="min-h-screen bg-[#F5F5F7]">
             <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-
                 {/* STEPS 1 - 3 */}
+
                 {step !== 4 && (
                     <>
                         {/* CHECKOUT HEADER */}
+
                         <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h1 className="text-2xl font-extrabold text-[#1D1D1F]">
@@ -120,7 +249,9 @@ function CheckoutPage() {
                                 </h1>
 
                                 <p className="mt-1 text-sm text-gray-500">
-                                    Complete your order in a few simple steps.
+                                    Complete your order
+                                    in a few simple
+                                    steps.
                                 </p>
                             </div>
 
@@ -130,15 +261,22 @@ function CheckoutPage() {
                         </div>
 
                         {/* MAIN CHECKOUT LAYOUT */}
-                        <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
 
+                        <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
                             {/* LEFT SIDE */}
+
                             <div>
                                 {step === 1 && (
                                     <ContactStep
-                                        onNext={() =>
-                                            setStep(2)
-                                        }
+                                        onNext={(
+                                            data
+                                        ) => {
+                                            setContactData(
+                                                data
+                                            );
+
+                                            setStep(2);
+                                        }}
                                     />
                                 )}
 
@@ -147,10 +285,18 @@ function CheckoutPage() {
                                         onBack={() =>
                                             setStep(1)
                                         }
-                                        onNext={() =>
-                                            setStep(3)
+                                        onNext={(
+                                            data
+                                        ) => {
+                                            setShippingData(
+                                                data
+                                            );
+
+                                            setStep(3);
+                                        }}
+                                        onShippingChange={
+                                            setShipping
                                         }
-                                        onShippingChange={setShipping}
                                     />
                                 )}
 
@@ -167,10 +313,17 @@ function CheckoutPage() {
                             </div>
 
                             {/* RIGHT SIDE */}
+
                             <CheckoutSummary
-                                cartItems={cartItems}
-                                subtotal={subtotal}
-                                shipping={shipping}
+                                cartItems={
+                                    cartItems
+                                }
+                                subtotal={
+                                    subtotal
+                                }
+                                shipping={
+                                    shipping
+                                }
                                 total={total}
                             />
                         </div>
@@ -178,11 +331,18 @@ function CheckoutPage() {
                 )}
 
                 {/* STEP 4 */}
+
                 {step === 4 && (
                     <OrderConfirmation
-                        orderItems={completedOrder}
-                        total={completedTotal}
-                        orderNumber={orderNumber}
+                        orderItems={
+                            completedOrder
+                        }
+                        total={
+                            completedTotal
+                        }
+                        orderNumber={
+                            orderNumber
+                        }
                     />
                 )}
             </div>
