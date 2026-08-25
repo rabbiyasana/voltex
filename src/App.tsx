@@ -13,6 +13,7 @@ import CheckoutPage from "./pages/CheckoutPage";
 import RegisterPage from "./pages/RegisterPage";
 import AccountPage from "./pages/AccountPage";
 import OrdersPage from "./pages/OrdersPage";
+import OrderDetailsPage from "./pages/OrderDetailsPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
@@ -97,6 +98,10 @@ function App() {
         <Route
           path="/account/orders"
           element={<OrdersPage />}
+        />
+        <Route
+          path="/account/orders/:id"
+          element={<OrderDetailsPage />}
         />
       </Routes>
     </div>

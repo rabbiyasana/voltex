@@ -1,23 +1,12 @@
+import { useSelector } from "react-redux";
+
+import type { RootState } from "../app/store";
 import OrderList from "../components/orders/OrderList";
 
-const orders = [
-  {
-    id: "VTX-845219",
-    date: "August 24, 2026",
-    status: "Delivered",
-    total: 129.98,
-    itemCount: 2,
-  },
-  {
-    id: "VTX-731804",
-    date: "August 18, 2026",
-    status: "Processing",
-    total: 89.99,
-    itemCount: 1,
-  },
-];
-
 function OrdersPage() {
+    const orders = useSelector(
+        (state: RootState) => state.orders.items
+    );
   return (
     <main className="min-h-screen bg-[#F5F5F7] px-4 py-10 sm:px-6">
       <div className="mx-auto max-w-4xl">
@@ -30,10 +19,7 @@ function OrdersPage() {
             View and track your previous orders.
           </p>
         </div>
-
-        <OrderList
-          orders={orders}
-        />
+        <OrderList orders={orders} />
       </div>
     </main>
   );

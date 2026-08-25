@@ -1,12 +1,5 @@
 import OrderCard from "./OrderCard";
-
-interface Order {
-  id: string;
-  date: string;
-  status: string;
-  total: number;
-  itemCount: number;
-}
+import type { Order } from "../../types/orderType";
 
 interface OrderListProps {
   orders: Order[];
@@ -38,11 +31,10 @@ function OrderList({
           date={order.date}
           status={order.status}
           total={order.total}
-          itemCount={order.itemCount}
+          itemCount={order.items.length}
         />
       ))}
     </div>
   );
 }
-
 export default OrderList;
